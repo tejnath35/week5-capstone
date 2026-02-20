@@ -18,7 +18,7 @@ commonRoute.post("/login", async (req, res) => {
     });
 
 //logout for User, Author and Admin
-commonRoute.get('/logout', (req, res) => {
+commonRoute.post('/logout', (req, res) => {
   // Clear the cookie named 'token'
   res.clearCookie('token', {
     httpOnly: true, // Must match original  settings
