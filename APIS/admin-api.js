@@ -1,7 +1,7 @@
 import exp from'express';
 import { register} from "../Services/Auth-Service.js";
-import { ArticleModel } from '../models/Artical-Model.js';
-import { UserTypeModel } from '../models/User-Model.js';
+import { ArticleModel } from '../Models/Artical-Model.js';
+import { UserTypeModel } from '../Models/User-Model.js';
 export const adminRoute=exp.Router();
 //authenticate admin(protected route)
 adminRoute.post('/users', async (req, res) => {

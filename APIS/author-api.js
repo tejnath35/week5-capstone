@@ -1,9 +1,9 @@
 import exp from "express";
 import { register,authenticate} from "../Services/Auth-Service.js";
-import { UserTypeModel } from "../models/User-Model.js";
-import { ArticleModel } from "../models/Artical-Model.js";
-import { checkAuthor } from "../middlewares/Check-Author.js";
-import { verifyToken } from "../middlewares/verifyToken.js";
+import { UserTypeModel } from "../Models/User-Model.js";
+import { ArticleModel } from "../Models/Artical-Model.js";
+import { checkAuthor } from "../Middlewares/Check-Author.js";
+import { verifyToken } from "../Middlewares/verifyToken.js";
 import mongoose from "mongoose";
 export const authorRoute = exp.Router();
 

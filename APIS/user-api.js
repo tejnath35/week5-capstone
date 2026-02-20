@@ -1,6 +1,6 @@
 import exp from 'express'
 import { register} from "../Services/Auth-Service.js";
-import { ArticleModel } from '../models/Artical-Model.js';
+import { ArticleModel } from '../Models/Artical-Model.js';
 
 export const userRoute = exp.Router();
 
