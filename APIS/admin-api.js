@@ -1,7 +1,7 @@
 import exp from'express';
-import { register} from "../Services/auth-service.js";
-import { ArticleModel } from '../models/artical-model.js';
-import { UserTypeModel } from '../models/user-model.js';
+import { register} from "../Services/Auth-Service.js";
+import { ArticleModel } from '../models/Artical-Model.js';
+import { UserTypeModel } from '../models/User-Model.js';
 export const adminRoute=exp.Router();
 //authenticate admin(protected route)
 adminRoute.post('/users', async (req, res) => {
@@ -38,3 +38,4 @@ adminRoute.put('/unblock/:authorId',async (req, res) => {
     res.status(200).json({message:"author unblocked"});
 }
 );
+

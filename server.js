@@ -1,11 +1,11 @@
 import exp from "express";
 import { connect } from "mongoose";
 import { config } from "dotenv";
-import { userRoute } from "./APIS/user-api.js";
+import { userRoute } from "./APIS/User-Api.js";
 import cookieParser from "cookie-parser";
-import { adminRoute } from "./APIS/admin-api.js";
-import { authorRoute } from "./APIS/author-api.js";
-import { commonRoute } from "./APIS/common-api.js";
+import { adminRoute } from "./APIS/Admin-Api.js";
+import { authorRoute } from "./APIS/Author-Api.js";
+import { commonRoute } from "./APIS/Common-Api.js";
 config(); //process.env
 
 //Create express application

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import {UserTypeModel} from '../models/user-model.js';
+import {UserTypeModel} from '../models/User-Model.js';
 import {config} from 'dotenv';
 config();
 export const register=async(userObj)=>{

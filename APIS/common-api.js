@@ -1,6 +1,6 @@
 import exp from "express";
 export const commonRoute = exp.Router();
-import { authenticate} from "../Services/auth-service.js";
+import { authenticate} from "../Services/Auth-Service.js";
 //login
 commonRoute.post("/login", async (req, res) => {
     //get user cred object
