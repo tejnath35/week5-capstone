@@ -18,7 +18,7 @@ commonRoute.post("/login", async (req, res) => {
     });
 
 //logout for User, Author and Admin
-commonRoute.post('/logout', (req, res) => {
+commonRoute.get('/logout', (req, res) => {
   // Clear the cookie named 'token'
   res.clearCookie('token', {
     httpOnly: true, // Must match original  settings
@@ -41,4 +41,15 @@ commonRoute.put('/change-password', async (req, res) => {
   //replace the current password with new password
   user.password = newPassword;
   await user.save();
+});
+
+commonRoute.get("/check-auth", (req, res) => {
+  try {
+    res.status(200).json({
+      success: true,
+      message: "User authenticated"
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Auth check failed" });
+  }
 });

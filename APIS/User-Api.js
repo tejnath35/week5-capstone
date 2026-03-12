@@ -1,6 +1,7 @@
 import exp from 'express'
 import { register} from "../Services/Auth-Service.js";
 import { ArticleModel } from '../Models/Artical-Model.js';
+import { verifyToken } from '../Middlewares/verifyToken.js';
 
 export const userRoute = exp.Router();
 
@@ -12,11 +13,14 @@ userRoute.post('/users', async (req, res) => {
 });
 
 // read all articles
-userRoute.get('/articles', async (req, res) => {
-  let articles = await ArticleModel.find({ isArticalActive: true });
-  res.status(200).json({ message: "articles", payload: articles });
+userRoute.get('/articles', verifyToken("USER"), async (req, res) => {
+  try {
+    const articles = await ArticleModel.find();
+    res.status(200).json({ message: "articles", payload: articles });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
-
 // add comment to an article
 userRoute.post('/articles/:articleId/comments', async (req, res) => {
   const { articleId } = req.params;

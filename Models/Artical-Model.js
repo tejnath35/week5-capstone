@@ -28,7 +28,7 @@ const articalSchema=new Schema({
         required:[true,"content is required"]
     },
     comments:[userCommentSchema],
-    isArticalActive:{
+    isArticleActive:{
         type:Boolean,
         default:true
     },
