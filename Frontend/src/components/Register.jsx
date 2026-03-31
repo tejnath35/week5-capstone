@@ -53,7 +53,7 @@ function Register() {
   }
 
   return (
-    <div className="h-188.5  w-full m-auto bg-amber-100  flex items-center justify-center ">
+    <div className="h-188.5  w-full m-auto flex items-center justify-center ">
       <div className="w-100  bg-white shadow-xl rounded-2xl p-5 border border-violet-100">
 
         {/* Title */}

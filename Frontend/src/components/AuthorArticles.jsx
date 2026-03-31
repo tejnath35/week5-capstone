@@ -35,12 +35,14 @@ function AuthorArticles() {
     getAuthorArticles();
   }, [user]);
 
+  // ✅ FIX: allow opening even if deleted
   const openArticle = (article) => {
     navigate(`/article/${article._id}`, {
       state: article,
     });
   };
 
+  // format date
   const formatDate = (date) => {
     return new Date(date).toLocaleString("en-IN", {
       timeZone: "Asia/Kolkata",
@@ -48,6 +50,7 @@ function AuthorArticles() {
     });
   };
 
+  // loading
   if (loading) {
     return (
       <p className="text-center text-lg font-semibold text-gray-600 mt-10">
@@ -56,10 +59,12 @@ function AuthorArticles() {
     );
   }
 
+  // error
   if (error) {
     return <p className="text-center text-red-500 mt-10">{error}</p>;
   }
 
+  // empty
   if (articles.length === 0) {
     return (
       <div className="text-center text-gray-500 mt-10 text-lg">
@@ -75,22 +80,32 @@ function AuthorArticles() {
         {articles.map((article) => (
           <div
             key={article._id}
-            className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition flex flex-col h-full"
+            className={`bg-white border border-gray-200 rounded-xl p-5 shadow-sm hover:shadow-md transition flex flex-col h-full
+              ${!article.isArticleActive ? "opacity-70 border-red-200" : ""}
+            `}
           >
             <div className="flex flex-col gap-2">
 
-              {/* Category */}
-              <p className="text-xs text-violet-600 font-semibold uppercase">
-                {article.category}
-              </p>
+              {/* Top row */}
+              <div className="flex justify-between items-center">
+                <p className="text-xs text-violet-600 font-semibold uppercase">
+                  {article.category}
+                </p>
+
+                {!article.isArticleActive && (
+                  <span className="text-xs bg-red-100 text-red-600 px-2 py-1 rounded">
+                    Deleted
+                  </span>
+                )}
+              </div>
 
               {/* Title */}
-              <p className="text-lg font-semibold text-gray-800 wrap-break-words line-clamp-2">
+              <p className="text-lg font-semibold text-gray-800 wrap-break-word line-clamp-2">
                 {article.title}
               </p>
 
-              {/* Content Preview */}
-              <p className="text-sm text-gray-600 wrap-break-words line-clamp-3">
+              {/* Content preview */}
+              <p className="text-sm text-gray-600 wrap-break-word line-clamp-3">
                 {article.content}
               </p>
 
@@ -98,16 +113,16 @@ function AuthorArticles() {
               <p className="text-xs text-gray-400">
                 {formatDate(article.createdAt)}
               </p>
-
             </div>
 
-            {/* Button */}
+            {/* ✅ Single clean button */}
             <button
               className="mt-auto pt-4 text-blue-600 text-sm font-medium hover:text-blue-800"
               onClick={() => openArticle(article)}
             >
               Read Article →
             </button>
+
           </div>
         ))}
 

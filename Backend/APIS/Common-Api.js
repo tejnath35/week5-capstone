@@ -1,21 +1,23 @@
 import exp from "express";
 export const commonRoute = exp.Router();
-import { authenticate} from "../Services/Auth-Service.js";
+import { verifyToken } from "../Middlewares/verifyToken.js";
+import { authenticate } from "../Services/Auth-Service.js";
+import { UserTypeModel } from "../Models/User-Model.js";
 //login
 commonRoute.post("/login", async (req, res) => {
-    //get user cred object
-      let userCred = req.body;
-      //call authenticate service
-      let { token, user } = await authenticate(userCred);
-      //save tokan as httpOnly cookie
-      res.cookie("token", token, {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: false,
-      });
-      //send res
-      res.status(200).json({ message: "login success", payload: user });
-    });
+  //get user cred object
+  let userCred = req.body;
+  //call authenticate service
+  let { token, user } = await authenticate(userCred);
+  //save tokan as httpOnly cookie
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false,
+  });
+  //send res
+  res.status(200).json({ message: "login success", payload: user });
+});
 
 //logout for User, Author and Admin
 commonRoute.get('/logout', (req, res) => {
@@ -25,7 +27,7 @@ commonRoute.get('/logout', (req, res) => {
     secure: false,   // Must match original  settings
     sameSite: 'lax' // Must match original  settings
   });
-  
+
   res.status(200).json({ message: 'Logged out successfully' });
 });
 
@@ -43,13 +45,20 @@ commonRoute.put('/change-password', async (req, res) => {
   await user.save();
 });
 
-commonRoute.get("/check-auth", (req, res) => {
+
+commonRoute.get("/check-auth", verifyToken(), async (req, res) => {
   try {
+    const user = await UserTypeModel.findOne({ email: req.user.email });
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    const userObj = user.toObject();
+    delete userObj.password;
     res.status(200).json({
-      success: true,
-      message: "User authenticated"
+      message: "Authenticated",
+      payload: userObj,
     });
-  } catch (error) {
-    res.status(500).json({ message: "Auth check failed" });
+  } catch (err) {
+    res.status(500).json({ message: "Error checking auth", error: err.message });
   }
 });

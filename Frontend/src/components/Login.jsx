@@ -11,48 +11,42 @@ function Login() {
   const isAuthenticated = useAuth((state) => state.isAuthenticated);
   const currentUser = useAuth((state) => state.currentUser);
   const error = useAuth((state) => state.error);
+  const loading = useAuth((state) => state.loading);
 
   const navigate = useNavigate();
 
+  // Handle login submit
   const onUserLogin = async (userCredObj) => {
     await login(userCredObj);
   };
 
+  // Redirect if already logged in OR after login
   useEffect(() => {
     if (!isAuthenticated || !currentUser) return;
 
-    switch (currentUser.role) {
-      case "USER":
-        toast.success("Logged in successfully");
-        navigate("/user-profile");
-        break;
+    toast.success("Logged in successfully");
 
-      case "AUTHOR":
-        toast.success("Logged in successfully");
-        navigate("/author-profile");
-        break;
+    const routes = {
+      USER: "/user-profile",
+      AUTHOR: "/author-profile",
+      ADMIN: "/admin-profile",
+    };
 
-      case "ADMIN":
-        toast.success("Logged in successfully");
-        navigate("/admin-profile");
-        break;
+    navigate(routes[currentUser.role] || "/");
 
-      default:
-        navigate("/");
-    }
   }, [isAuthenticated, currentUser, navigate]);
 
   return (
-    <div className="h-188 w-full m-auto bg-amber-100 from-blue-50 via-white to-blue-100 flex items-center justify-center ">
+    <div className="h-screen w-full flex items-center justify-center bg-linear-to-br from-blue-50 via-white to-blue-100">
 
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-10 mb-30 w-100 max-w-md">
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-10 w-full max-w-md">
 
         {/* Title */}
         <h2 className="text-3xl font-semibold text-gray-900 text-center mb-8">
           Sign In
         </h2>
 
-        {/* Error message */}
+        {/* Error */}
         {error && (
           <p className="bg-red-100 text-red-600 border border-red-200 rounded-lg px-4 py-2 text-sm mb-4">
             {error}
@@ -71,6 +65,7 @@ function Login() {
               type="email"
               {...register("email", { required: true })}
               placeholder="you@example.com"
+              onChange={() => useAuth.setState({ error: null })}
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
@@ -85,6 +80,7 @@ function Login() {
               type="password"
               {...register("password", { required: true })}
               placeholder="••••••••"
+              onChange={() => useAuth.setState({ error: null })}
               className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
@@ -102,9 +98,10 @@ function Login() {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition"
+            disabled={loading}
+            className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50"
           >
-            Sign In
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
 

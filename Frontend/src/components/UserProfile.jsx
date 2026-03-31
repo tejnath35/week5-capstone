@@ -11,6 +11,23 @@ function UserProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [articles, setArticles] = useState([]);
+  const [user, setUser] = useState({ firstName: "", lastName: "", email: "" });
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:4000/user-api/profile",
+          { withCredentials: true }
+        );
+        setUser(res.data.payload);
+      } catch (err) {
+        console.error("Error fetching profile:", err);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   useEffect(() => {
     const getArticles = async () => {
@@ -21,7 +38,13 @@ function UserProfile() {
           { withCredentials: true }
         );
 
-        setArticles(res.data.payload);
+        // ✅ FILTER ONLY ACTIVE ARTICLES
+        const activeArticles = res.data.payload.filter(
+          (article) => article.isArticleActive
+        );
+
+        setArticles(activeArticles);
+
       } catch (err) {
         setError(err.response?.data?.error || "Something went wrong");
       } finally {
@@ -63,6 +86,22 @@ function UserProfile() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-10">
+      {/* User Profile Section */}
+      <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-sm mb-8">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">User Profile</h2>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <p className="text-gray-600 text-sm uppercase tracking-wide">User Name</p>
+            <p className="text-xl font-semibold text-gray-800 mt-1">
+              {user.firstName} {user.lastName}
+            </p>
+          </div>
+          <div>
+            <p className="text-gray-600 text-sm uppercase tracking-wide">Email ID</p>
+            <p className="text-xl font-semibold text-gray-800 mt-1">{user.email}</p>
+          </div>
+        </div>
+      </div>
 
       {error && (
         <p className="text-red-500 text-center mb-6">{error}</p>
@@ -77,6 +116,13 @@ function UserProfile() {
           Logout
         </button>
       </div>
+
+      {/* No articles */}
+      {articles.length === 0 && (
+        <p className="text-center text-gray-500 text-lg">
+          No articles available.
+        </p>
+      )}
 
       {/* Articles Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -93,7 +139,7 @@ function UserProfile() {
             </p>
 
             {/* Content preview */}
-            <p className="text-gray-600 text-sm mb-4">
+            <p className="text-gray-600 text-sm mb-4 wrap-break-word">
               {articleObj.content.slice(0, 80)}...
             </p>
 

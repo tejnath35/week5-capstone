@@ -57,7 +57,7 @@ function EditArticle() {
   };
 
   return (
-    <div className="min-h-screen m-auto w-full bg-amber-100 flex items-center justify-center px-4 py-16">
+    <div className="min-h-screen m-auto w-full flex items-center justify-center px-4 py-16">
 
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-10 w-full max-w-2xl">
 
@@ -111,7 +111,7 @@ function EditArticle() {
 
           {/* Content */}
           <div className="mb-6">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium wrap-break-word text-gray-700 mb-1">
               Content
             </label>
 

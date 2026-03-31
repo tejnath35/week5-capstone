@@ -17,6 +17,22 @@ authorRoute.post("/users", async (req, res) => {
   res.status(201).json({ message: "authroe created", payload: newUserObj });
 });
 
+// get author profile
+authorRoute.get("/profile", verifyToken("AUTHOR"), async (req, res) => {
+  try {
+    const userId = req.user.userid;
+    const user = await UserTypeModel.findById(userId).select('firstName lastName email profileImageUrl');
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.status(200).json({ message: "Author profile", payload: user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 
 //Create article(protected route)
 authorRoute.post("/articles",verifyToken("AUTHOR") , async (req, res) => {
@@ -37,7 +53,7 @@ authorRoute.get("/articles/:authorId",verifyToken("AUTHOR") ,checkAuthor, async 
   let aid = req.params.authorId;
 
   //read atricles by this author which are acticve
-  let articles = await ArticleModel.find({ author: aid, isArticleActive: true }).populate("author", "firstName email");
+  let articles = await ArticleModel.find({ author: aid}).populate("author", "firstName email");
   //send res
   res.status(200).json({ message: "articles", payload: articles });
 });
@@ -81,26 +97,37 @@ authorRoute.put(
   }
 );
 // soft delete article
+// soft delete OR restore article
 authorRoute.patch(
   "/articles/:articleId/status",
   verifyToken("AUTHOR"),
   async (req, res) => {
+    try {
+      const { articleId } = req.params;
+      const { isArticleActive } = req.body; // ✅ dynamic
 
-    const { articleId } = req.params;
+      let article = await ArticleModel.findByIdAndUpdate(
+        articleId,
+        { isArticleActive },
+        { new: true }
+      );
 
-    let article = await ArticleModel.findByIdAndUpdate(
-      articleId,
-      { isArticleActive: false },
-      { new: true }
-    );
+      if (!article) {
+        return res.status(404).json({ message: "article not found" });
+      }
 
-    if (!article) {
-      return res.status(404).json({ message: "article not found" });
+      res.status(200).json({
+        message: isArticleActive
+          ? "article restored"
+          : "article soft deleted",
+        payload: article,
+      });
+
+    } catch (err) {
+      res.status(500).json({
+        message: "error updating article",
+        error: err.message,
+      });
     }
-
-    res.status(200).json({
-      message: "article soft deleted",
-      payload: article
-    });
   }
 );
