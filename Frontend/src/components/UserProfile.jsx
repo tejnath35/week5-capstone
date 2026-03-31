@@ -107,15 +107,8 @@ function UserProfile() {
         <p className="text-red-500 text-center mb-6">{error}</p>
       )}
 
-      {/* Logout */}
-      <div className="flex justify-end mb-6">
-        <button
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-          onClick={onLogout}
-        >
-          Logout
-        </button>
-      </div>
+      {/* Articles Title */}
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">Articles</h2>
 
       {/* No articles */}
       {articles.length === 0 && (
