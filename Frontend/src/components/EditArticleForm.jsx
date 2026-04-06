@@ -42,7 +42,7 @@ function EditArticle() {
       };
 
       await axios.put(
-        "http://localhost:4000/author-api/articles",
+        "https://week5-capstone.onrender.com/author-api/articles",
         updatedData,
         { withCredentials: true }
       );

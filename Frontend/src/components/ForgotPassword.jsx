@@ -8,7 +8,7 @@ function ForgotPassword() {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post("http://localhost:4000/common-api/forgot-password", data);
+      await axios.post("https://week5-capstone.onrender.com/common-api/forgot-password", data);
       toast.success("Password reset successfully. You can now log in with your new password.");
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
