@@ -1,110 +1,85 @@
-import exp from "express";
-import { connect } from "mongoose";
-import { config } from "dotenv";
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
 import { userRoute } from "./APIS/User-Api.js";
 import { adminRoute } from "./APIS/Admin-Api.js";
 import { authorRoute } from "./APIS/Author-Api.js";
 import { commonRoute } from "./APIS/Common-Api.js";
 
-config(); // load environment variables
+// Load env variables
+dotenv.config();
 
-// Create express application
-const app = exp();
+const app = express();
 
-// enable CORS
+// ✅ CORS (important for Vercel frontend)
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
+      "https://your-app.vercel.app" // 🔁 replace with your real Vercel URL
     ],
     credentials: true,
   })
 );
 
-// body parser middleware
-app.use(exp.json());
-
-// cookie parser middleware
+// Middleware
+app.use(express.json());
 app.use(cookieParser());
 
-// connect APIs
+// Routes
 app.use("/user-api", userRoute);
 app.use("/author-api", authorRoute);
 app.use("/admin-api", adminRoute);
 app.use("/common-api", commonRoute);
 
-// connect to MongoDB
-const connectDB = async () => {
-  try {
-    await connect(process.env.DB_URL);
-    console.log("DB connection success");
+// Health check route (VERY IMPORTANT for Render)
+app.get("/", (req, res) => {
+  res.send("Server is running 🚀");
+});
 
-    // start server
-    app.listen(process.env.PORT, () =>
-      console.log(`Server started on port ${process.env.PORT}`)
-    );
+// ✅ Connect DB and start server
+const startServer = async () => {
+  try {
+    if (!process.env.DB_URL) {
+      throw new Error("DB_URL is missing in environment variables");
+    }
+
+    await mongoose.connect(process.env.DB_URL);
+    console.log("✅ MongoDB connected");
+
+    const PORT = process.env.PORT || 4000;
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+
   } catch (err) {
-    console.log("Err in DB connection", err);
+    console.error("❌ Failed to start server:", err.message);
+    process.exit(1); // force crash so Render shows error
   }
 };
 
-connectDB();
+startServer();
 
-// invalid path middleware
-app.use((req, res, next) => {
+// ❌ Invalid route
+app.use((req, res) => {
   res.status(404).json({ message: "Invalid path" });
 });
 
-// error handling middleware
+// ❌ Global error handler
 app.use((err, req, res, next) => {
-  console.log("Error name:", err.name);
-  console.log("Error code:", err.code);
-  console.log("Full error:", err);
+  console.error("Error:", err);
 
-  // mongoose validation error
-  if (err.name === "ValidationError") {
-    return res.status(400).json({
-      message: "error occurred",
-      error: err.message,
-    });
+  if (err.name === "ValidationError" || err.name === "CastError") {
+    return res.status(400).json({ error: err.message });
   }
 
-  // mongoose cast error
-  if (err.name === "CastError") {
-    return res.status(400).json({
-      message: "error occurred",
-      error: err.message,
-    });
+  if (err.code === 11000) {
+    return res.status(409).json({ error: "Duplicate field value" });
   }
 
-  const errCode = err.code ?? err.cause?.code ?? err.errorResponse?.code;
-  const keyValue =
-    err.keyValue ?? err.cause?.keyValue ?? err.errorResponse?.keyValue;
-
-  // duplicate key error
-  if (errCode === 11000) {
-    const field = Object.keys(keyValue)[0];
-    const value = keyValue[field];
-
-    return res.status(409).json({
-      message: "error occurred",
-      error: `${field} "${value}" already exists`,
-    });
-  }
-
-  // custom errors
-  if (err.status) {
-    return res.status(err.status).json({
-      message: "error occurred",
-      error: err.message,
-    });
-  }
-
-  // default server error
-  res.status(500).json({
-    message: "error occurred",
-    error: "Server side error",
-  });
+  res.status(500).json({ error: "Internal Server Error" });
 });
