@@ -19,7 +19,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://your-app.vercel.app" // 🔁 replace with your real Vercel URL
+      "https://week5-capstone.vercel.app"
     ],
     credentials: true,
   })
