@@ -8,9 +8,13 @@ export const userRoute = exp.Router();
 
 // register user
 userRoute.post('/users', async (req, res) => {
-  let userObj = req.body;
-  const newUserObj = await register({ ...userObj, role: "USER" });
-  res.status(201).json({ message: "user created", payload: newUserObj });
+  try {
+    let userObj = req.body;
+    const newUserObj = await register({ ...userObj, role: "USER" });
+    res.status(201).json({ message: "user created", payload: newUserObj });
+  } catch (error) {
+    res.status(error.status || 500).json({ error: error.message || "User registration failed" });
+  }
 });
 
 // get user profile

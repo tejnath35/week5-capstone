@@ -13,6 +13,7 @@ import { commonRoute } from "./APIS/Common-Api.js";
 dotenv.config();
 
 const app = express();
+app.set("trust proxy", 1);
 
 // ✅ CORS (important for Vercel frontend)
 app.use(
