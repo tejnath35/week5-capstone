@@ -15,12 +15,11 @@ dotenv.config();
 const app = express();
 app.set("trust proxy", 1);
 
-// ✅ CORS (important for Vercel frontend)
+// ✅ CORS
 const corsOptions = {
-  origin: [
-    "http://localhost:5173",
-    "https://week5-capstone.vercel.app"
-  ],
+  origin: function (origin, callback) {
+    callback(null, true); // Allow all origins for now to prevent CORS blocking issues
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],

@@ -14,8 +14,8 @@ commonRoute.post("/login", async (req, res) => {
     //save token as httpOnly cookie
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
+      secure: true,
     });
     //send res
     res.status(200).json({ message: "login success", payload: user });
@@ -28,9 +28,9 @@ commonRoute.post("/login", async (req, res) => {
 commonRoute.get('/logout', (req, res) => {
   // Clear the cookie named 'token'
   res.clearCookie('token', {
-    httpOnly: true, // Must match original settings
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
   });
 
   res.status(200).json({ message: 'Logged out successfully' });
