@@ -19,9 +19,9 @@ function Home() {
   };
 
   return (
-    <div className="flex flex-col m-auto items-center justify-center h-full bg-gray-200 rounded-2xl text-center p-10">
+    <div className="flex flex-col mx-4 my-8 md:m-auto items-center justify-center h-full bg-gray-200 rounded-2xl text-center p-6 sm:p-10 w-full max-w-4xl">
 
-      <h1 className="text-5xl font-bold text-indigo-400 mb-6">
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-indigo-400 mb-6">
         Welcome to Our Platform
       </h1>
 

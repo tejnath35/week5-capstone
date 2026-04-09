@@ -8,7 +8,7 @@ function ForgotPassword() {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post("https://week5-capstone.onrender.com/common-api/forgot-password", data);
+      await axios.post("http://localhost:4000/common-api/forgot-password", data);
       toast.success("Password reset successfully. You can now log in with your new password.");
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
@@ -16,9 +16,9 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="h-188 w-full m-auto from-blue-50 via-white to-blue-100 flex items-center justify-center">
+    <div className="min-h-screen px-4 py-10 w-full m-auto bg-linear-to-br from-blue-50 via-white to-blue-100 flex items-center justify-center">
 
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-10 mb-30 w-100 max-w-md">
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-10 w-full max-w-md">
 
         {/* Title */}
         <h2 className="text-3xl font-semibold text-gray-900 text-center mb-8">

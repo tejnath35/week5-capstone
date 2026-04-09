@@ -34,12 +34,12 @@ function Header() {
         {/* Logo */}
         <NavLink
           to="/"
-          className="text-lg font-semibold tracking-tight text-gray-900"
+          className="text-lg font-semibold tracking-tight text-gray-900 shrink-0 mr-4"
         >
           MyBlog
         </NavLink>
 
-        <ul className="flex justify-between gap-8 text-sm">
+        <ul className="flex flex-wrap items-center justify-end gap-4 sm:gap-8 text-sm">
 
           {/* Always visible */}
           <li>

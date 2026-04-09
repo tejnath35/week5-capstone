@@ -25,7 +25,7 @@ function WriteArticle() {
 
     try {
       await axios.post(
-        "https://week5-capstone.onrender.com/author-api/articles",
+        "http://localhost:4000/author-api/articles",
         articleObj,
         { withCredentials: true }
       );

@@ -37,9 +37,9 @@ function Login() {
   }, [isAuthenticated, currentUser, navigate]);
 
   return (
-    <div className="h-screen w-full flex items-center justify-center bg-linear-to-br from-blue-50 via-white to-blue-100">
+    <div className="min-h-screen px-4 w-full flex items-center justify-center bg-linear-to-br from-blue-50 via-white to-blue-100">
 
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-10 w-full max-w-md">
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-10 w-full max-w-md">
 
         {/* Title */}
         <h2 className="text-3xl font-semibold text-gray-900 text-center mb-8">

@@ -39,7 +39,7 @@ function AdminProfile() {
       return;
     }
     try {
-      await axios.delete(`https://week5-capstone.onrender.com/admin-api/users/${userId}`, { withCredentials: true });
+      await axios.delete(`http://localhost:4000/admin-api/users/${userId}`, { withCredentials: true });
       toast.success("User deleted successfully");
       // Refresh users list if implemented
     } catch (error) {

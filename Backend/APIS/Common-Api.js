@@ -3,6 +3,7 @@ export const commonRoute = exp.Router();
 import { verifyToken } from "../Middlewares/verifyToken.js";
 import { authenticate } from "../Services/Auth-Service.js";
 import { UserTypeModel } from "../Models/User-Model.js";
+import bcrypt from "bcryptjs";
 //login
 commonRoute.post("/login", async (req, res) => {
   try {
@@ -49,6 +50,21 @@ commonRoute.put('/change-password', async (req, res) => {
   await user.save();
 });
 
+//forgot password
+commonRoute.post('/forgot-password', async (req, res) => {
+  try {
+    let { email, newPassword } = req.body;
+    let user = await UserTypeModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found with this email" });
+    }
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating password", error: error.message });
+  }
+});
 
 commonRoute.get("/check-auth", verifyToken(), async (req, res) => {
   try {

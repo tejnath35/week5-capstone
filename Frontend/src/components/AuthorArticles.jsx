@@ -19,7 +19,7 @@ function AuthorArticles() {
 
       try {
         const res = await axios.get(
-          `https://week5-capstone.onrender.com/author-api/articles/${user._id}`,
+          `http://localhost:4000/author-api/articles/${user._id}`,
           { withCredentials: true }
         );
 

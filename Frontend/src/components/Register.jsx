@@ -18,7 +18,7 @@ function Register() {
 
       if (role === "user") {
         let resObj = await axios.post(
-          "https://week5-capstone.onrender.com/user-api/users",
+          "http://localhost:4000/user-api/users",
           userObj
         );
 
@@ -29,7 +29,7 @@ function Register() {
 
       if (role === "author") {
         let resObj = await axios.post(
-          "https://week5-capstone.onrender.com/author-api/users",
+          "http://localhost:4000/author-api/users",
           userObj
         );
 
@@ -53,8 +53,8 @@ function Register() {
   }
 
   return (
-    <div className="h-188.5  w-full m-auto flex items-center justify-center ">
-      <div className="w-100  bg-white shadow-xl rounded-2xl p-5 border border-violet-100">
+    <div className="min-h-screen px-4 py-10 w-full m-auto flex items-center justify-center bg-linear-to-br from-violet-50 to-white">
+      <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-6 sm:p-8 border border-violet-100">
 
         {/* Title */}
         <h2 className="text-2xl font-bold text-center text-violet-700 mb-3">

@@ -9,7 +9,7 @@ function AuthorProfile() {
     const fetchAuthorProfile = async () => {
       try {
         const res = await axios.get(
-          "https://week5-capstone.onrender.com/author-api/profile",
+          "http://localhost:4000/author-api/profile",
           { withCredentials: true }
         );
         setAuthor(res.data.payload);

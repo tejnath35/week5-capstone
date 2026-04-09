@@ -23,7 +23,7 @@ function ArticleByID() {
 
       try {
         const res = await axios.get(
-          `https://week5-capstone.onrender.com/user-api/article/${id}`,
+          `http://localhost:4000/user-api/article/${id}`,
           { withCredentials: true }
         );
 
@@ -51,7 +51,7 @@ function ArticleByID() {
   const deleteArticle = async () => {
     try {
       const res = await axios.patch(
-        `https://week5-capstone.onrender.com/author-api/articles/${id}/status`,
+        `http://localhost:4000/author-api/articles/${id}/status`,
         { isArticleActive: false },
         { withCredentials: true }
       );
@@ -66,7 +66,7 @@ function ArticleByID() {
   const restoreArticle = async () => {
     try {
       const res = await axios.patch(
-        `https://week5-capstone.onrender.com/author-api/articles/${id}/status`,
+        `http://localhost:4000/author-api/articles/${id}/status`,
         { isArticleActive: true },
         { withCredentials: true }
       );
