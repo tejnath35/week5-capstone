@@ -1,15 +1,18 @@
 import { useForm } from "react-hook-form";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import axios from "axios";
 
 function ForgotPassword() {
   const { register, handleSubmit } = useForm();
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
     try {
       await axios.post("https://week5-capstone.onrender.com/common-api/forgot-password", data);
       toast.success("Password reset successfully. You can now log in with your new password.");
+      navigate("/login");
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
     }
