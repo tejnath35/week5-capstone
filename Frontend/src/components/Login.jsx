@@ -87,12 +87,12 @@ function Login() {
 
           {/* Forgot password */}
           <div className="text-right mb-5">
-            <a
-              href="/forgot-password"
+            <NavLink
+              to="/forgot-password"
               className="text-blue-600 text-xs hover:text-blue-800"
             >
               Forgot password?
-            </a>
+            </NavLink>
           </div>
 
           {/* Submit */}
