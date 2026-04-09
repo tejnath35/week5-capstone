@@ -18,7 +18,7 @@ function Register() {
 
       if (role === "user") {
         let resObj = await axios.post(
-          "http://localhost:4000/user-api/users",
+          "https://week5-capstone.onrender.com/user-api/users",
           userObj
         );
 
@@ -29,7 +29,7 @@ function Register() {
 
       if (role === "author") {
         let resObj = await axios.post(
-          "http://localhost:4000/author-api/users",
+          "https://week5-capstone.onrender.com/author-api/users",
           userObj
         );
 

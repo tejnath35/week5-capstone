@@ -6,7 +6,7 @@ const getApiBaseUrl = () => {
     return import.meta.env.VITE_API_URL;
   }
   // Default to localhost for development
-  return "http://localhost:4000";
+  return "https://week5-capstone.onrender.com";
 };
 
 const API_BASE_URL = getApiBaseUrl();

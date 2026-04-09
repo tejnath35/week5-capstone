@@ -17,7 +17,7 @@ function UserProfile() {
     const fetchUserProfile = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:4000/user-api/profile",
+          "https://week5-capstone.onrender.com/user-api/profile",
           { withCredentials: true }
         );
         setUser(res.data.payload);
@@ -34,7 +34,7 @@ function UserProfile() {
       setLoading(true);
       try {
         const res = await axios.get(
-          "http://localhost:4000/user-api/articles",
+          "https://week5-capstone.onrender.com/user-api/articles",
           { withCredentials: true }
         );
 
