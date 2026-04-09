@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import axios from "axios";
+import { apiClient, API_ENDPOINTS } from "../services/apiClient";
 
 export const useAuth = create((set) => ({
   currentUser: null,
@@ -14,11 +14,7 @@ export const useAuth = create((set) => ({
     try {
       set({ loading: true, error: null });
 
-      const res = await axios.post(
-        "https://week5-capstone.onrender.com/common-api/login",
-        userCredObj,
-        { withCredentials: true }
-      );
+      const res = await apiClient.post(API_ENDPOINTS.LOGIN, userCredObj);
 
       set({
         loading: false,
@@ -41,10 +37,7 @@ export const useAuth = create((set) => ({
     try {
       set({ loading: true, error: null });
 
-      await axios.get(
-        "https://week5-capstone.onrender.com/common-api/logout",
-        { withCredentials: true }
-      );
+      await apiClient.get(API_ENDPOINTS.LOGOUT);
 
       set({
         loading: false,
@@ -67,10 +60,7 @@ export const useAuth = create((set) => ({
     try {
       set({ loading: true });
 
-      const res = await axios.get(
-        "https://week5-capstone.onrender.com/common-api/check-auth",
-        { withCredentials: true }
-      );
+      const res = await apiClient.get(API_ENDPOINTS.CHECK_AUTH);
 
       set({
         currentUser: res.data.payload,
