@@ -16,15 +16,18 @@ const app = express();
 app.set("trust proxy", 1);
 
 // ✅ CORS (important for Vercel frontend)
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://week5-capstone.vercel.app"
-    ],
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: [
+    "http://localhost:5173",
+    "https://week5-capstone.vercel.app"
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 // Middleware
 app.use(express.json());
