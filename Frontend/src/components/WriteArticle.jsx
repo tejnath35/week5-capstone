@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import axios from "axios";
+import { apiClient } from '../services/apiClient';
+import axios from 'axios';
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { useAuth } from "../Rstore/authStore";
@@ -24,8 +25,7 @@ function WriteArticle() {
     articleObj.author = currentUser._id;
 
     try {
-      await axios.post(
-        "https://week5-capstone.onrender.com/author-api/articles",
+      await apiClient.post("/author-api/articles",
         articleObj,
         { withCredentials: true }
       );

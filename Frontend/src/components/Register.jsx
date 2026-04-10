@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 import { useState } from "react";
-import axios from "axios";
+import { apiClient } from '../services/apiClient';
+import axios from 'axios';
 
 function Register() {
   const { register, handleSubmit } = useForm();
@@ -17,8 +18,7 @@ function Register() {
       let { role, ...userObj } = newUser;
 
       if (role === "user") {
-        let resObj = await axios.post(
-          "https://week5-capstone.onrender.com/user-api/users",
+        let resObj = await apiClient.post("/user-api/users",
           userObj
         );
 
@@ -28,8 +28,7 @@ function Register() {
       }
 
       if (role === "author") {
-        let resObj = await axios.post(
-          "https://week5-capstone.onrender.com/author-api/users",
+        let resObj = await apiClient.post("/author-api/users",
           userObj
         );
 

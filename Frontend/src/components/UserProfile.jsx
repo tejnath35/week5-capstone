@@ -1,7 +1,8 @@
 import { useAuth } from "../Rstore/authStore";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
-import axios from "axios";
+import { apiClient } from '../services/apiClient';
+import axios from 'axios';
 import { useEffect, useState } from "react";
 
 function UserProfile() {
@@ -16,8 +17,7 @@ function UserProfile() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const res = await axios.get(
-          "https://week5-capstone.onrender.com/user-api/profile",
+        const res = await apiClient.get("/user-api/profile",
           { withCredentials: true }
         );
         setUser(res.data.payload);
@@ -33,8 +33,7 @@ function UserProfile() {
     const getArticles = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(
-          "https://week5-capstone.onrender.com/user-api/articles",
+        const res = await apiClient.get("/user-api/articles",
           { withCredentials: true }
         );
 

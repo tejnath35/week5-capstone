@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useEffect } from "react";
-import axios from "axios";
+import { apiClient } from '../services/apiClient';
+import axios from 'axios';
 import { toast } from "react-hot-toast";
 
 function EditArticle() {
@@ -41,8 +42,7 @@ function EditArticle() {
         author: article.author,
       };
 
-      await axios.put(
-        "https://week5-capstone.onrender.com/author-api/articles",
+      await apiClient.put("/author-api/articles",
         updatedData,
         { withCredentials: true }
       );

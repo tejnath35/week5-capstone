@@ -16,6 +16,10 @@ export const useAuth = create((set) => ({
 
       const res = await apiClient.post(API_ENDPOINTS.LOGIN, userCredObj);
 
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
       set({
         loading: false,
         isAuthenticated: true,
@@ -38,6 +42,8 @@ export const useAuth = create((set) => ({
       set({ loading: true, error: null });
 
       await apiClient.get(API_ENDPOINTS.LOGOUT);
+
+      localStorage.removeItem("token");
 
       set({
         loading: false,

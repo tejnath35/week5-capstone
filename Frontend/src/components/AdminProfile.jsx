@@ -1,7 +1,8 @@
 import { useAuth } from "../Rstore/authStore";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
-import axios from "axios";
+import { apiClient } from '../services/apiClient';
+import axios from 'axios';
 import { useEffect, useState } from "react";
 
 function AdminProfile() {
@@ -39,7 +40,7 @@ function AdminProfile() {
       return;
     }
     try {
-      await axios.delete(`https://week5-capstone.onrender.com/admin-api/users/${userId}`, { withCredentials: true });
+      await apiClient.delete(`/admin-api/users/${userId}`, { withCredentials: true });
       toast.success("User deleted successfully");
       // Refresh users list if implemented
     } catch (error) {

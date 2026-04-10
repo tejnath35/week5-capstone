@@ -1,6 +1,7 @@
 import { useParams, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { apiClient } from '../services/apiClient';
+import axios from 'axios';
 import { useAuth } from "../Rstore/authStore";
 
 function ArticleByID() {
@@ -22,8 +23,7 @@ function ArticleByID() {
       setLoading(true);
 
       try {
-        const res = await axios.get(
-          `https://week5-capstone.onrender.com/user-api/article/${id}`,
+        const res = await apiClient.get(`/user-api/article/${id}`,
           { withCredentials: true }
         );
 
@@ -50,8 +50,7 @@ function ArticleByID() {
   // ❌ DELETE (soft delete)
   const deleteArticle = async () => {
     try {
-      const res = await axios.patch(
-        `https://week5-capstone.onrender.com/author-api/articles/${id}/status`,
+      const res = await apiClient.patch(`/author-api/articles/${id}/status`,
         { isArticleActive: false },
         { withCredentials: true }
       );
@@ -65,8 +64,7 @@ function ArticleByID() {
   // ♻️ RESTORE
   const restoreArticle = async () => {
     try {
-      const res = await axios.patch(
-        `https://week5-capstone.onrender.com/author-api/articles/${id}/status`,
+      const res = await apiClient.patch(`/author-api/articles/${id}/status`,
         { isArticleActive: true },
         { withCredentials: true }
       );

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { apiClient } from '../services/apiClient';
+import axios from 'axios';
 import { useNavigate } from "react-router";
 import { useAuth } from "../Rstore/authStore";
 
@@ -18,8 +19,7 @@ function AuthorArticles() {
       setLoading(true);
 
       try {
-        const res = await axios.get(
-          `https://week5-capstone.onrender.com/author-api/articles/${user._id}`,
+        const res = await apiClient.get(`/author-api/articles/${user._id}`,
           { withCredentials: true }
         );
 

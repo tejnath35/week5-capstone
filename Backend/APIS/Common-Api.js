@@ -18,7 +18,7 @@ commonRoute.post("/login", async (req, res) => {
       secure: true,
     });
     //send res
-    res.status(200).json({ message: "login success", payload: user });
+    res.status(200).json({ message: "login success", payload: user, token });
   } catch (err) {
     res.status(err.status || 500).json({ error: err.message || "Login failed" });
   }

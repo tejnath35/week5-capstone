@@ -5,8 +5,8 @@ const getApiBaseUrl = () => {
   if (import.meta.env.VITE_API_URL) {
     return import.meta.env.VITE_API_URL;
   }
-  // Default to localhost for development
-  return "https://week5-capstone.onrender.com";
+  // Automatically use localhost in dev, and Render in production
+  return import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com";
 };
 
 const API_BASE_URL = getApiBaseUrl();
@@ -15,6 +15,15 @@ const API_BASE_URL = getApiBaseUrl();
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true, // Important for cookies
+});
+
+// Add a request interceptor to attach token from localStorage
+apiClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // Export API_BASE_URL for components that need it

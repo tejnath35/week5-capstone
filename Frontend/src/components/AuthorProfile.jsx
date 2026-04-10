@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { apiClient } from '../services/apiClient';
+import axios from 'axios';
 
 function AuthorProfile() {
   const [author, setAuthor] = useState({ firstName: "", lastName: "", email: "" });
@@ -8,8 +9,7 @@ function AuthorProfile() {
   useEffect(() => {
     const fetchAuthorProfile = async () => {
       try {
-        const res = await axios.get(
-          "https://week5-capstone.onrender.com/author-api/profile",
+        const res = await apiClient.get("/author-api/profile",
           { withCredentials: true }
         );
         setAuthor(res.data.payload);
