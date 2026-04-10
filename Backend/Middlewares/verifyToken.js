@@ -5,8 +5,8 @@ config();
 
 export const verifyToken = (...allowedRoles) => async (req, res, next) => {
   try {
-    // read token from cookies or authorization header
-    let token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+    // read token from authorization header first, fallback to cookies
+    let token = req.headers.authorization?.split(" ")[1] || req.cookies.token;
     console.log("token:", token);
 
     if (!token) {
