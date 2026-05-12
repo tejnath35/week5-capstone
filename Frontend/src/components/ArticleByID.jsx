@@ -1,8 +1,9 @@
 import { useParams, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
-import { apiClient } from '../services/apiClient';
 import axios from 'axios';
 import { useAuth } from "../Rstore/authStore";
+
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
 
 function ArticleByID() {
   const { id } = useParams();
@@ -23,9 +24,10 @@ function ArticleByID() {
       setLoading(true);
 
       try {
-        const res = await apiClient.get(`/user-api/article/${id}`,
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${API_URL}/user-api/article/${id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        });
 
         setArticle(res.data.payload);
       } catch (err) {
@@ -50,9 +52,12 @@ function ArticleByID() {
   // ❌ DELETE (soft delete)
   const deleteArticle = async () => {
     try {
-      const res = await apiClient.patch(`/author-api/articles/${id}/status`,
+      const res = await axios.patch(`${API_URL}/author-api/articles/${id}/status`,
         { isArticleActive: false },
-        { withCredentials: true }
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        }
       );
 
       setArticle(res.data.payload); // ✅ update UI
@@ -64,9 +69,12 @@ function ArticleByID() {
   // ♻️ RESTORE
   const restoreArticle = async () => {
     try {
-      const res = await apiClient.patch(`/author-api/articles/${id}/status`,
+      const res = await axios.patch(`${API_URL}/author-api/articles/${id}/status`,
         { isArticleActive: true },
-        { withCredentials: true }
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        }
       );
 
       setArticle(res.data.payload);

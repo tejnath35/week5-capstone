@@ -1,9 +1,10 @@
 import { useAuth } from "../Rstore/authStore";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
-import { apiClient } from '../services/apiClient';
 import axios from 'axios';
 import { useEffect, useState } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
 
 function UserProfile() {
   const logout = useAuth((state) => state.logout);
@@ -17,9 +18,10 @@ function UserProfile() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const res = await apiClient.get("/user-api/profile",
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${API_URL}/user-api/profile`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        });
         setUser(res.data.payload);
       } catch (err) {
         console.error("Error fetching profile:", err);
@@ -33,9 +35,10 @@ function UserProfile() {
     const getArticles = async () => {
       setLoading(true);
       try {
-        const res = await apiClient.get("/user-api/articles",
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${API_URL}/user-api/articles`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        });
 
         // ✅ FILTER ONLY ACTIVE ARTICLES
         const activeArticles = res.data.payload.filter(

@@ -1,9 +1,10 @@
 import { useAuth } from "../Rstore/authStore";
 import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
-import { apiClient } from '../services/apiClient';
 import axios from 'axios';
 import { useEffect, useState } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
 
 function AdminProfile() {
   const logout = useAuth((state) => state.logout);
@@ -40,7 +41,10 @@ function AdminProfile() {
       return;
     }
     try {
-      await apiClient.delete(`/admin-api/users/${userId}`, { withCredentials: true });
+      await axios.delete(`${API_URL}/admin-api/users/${userId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true
+      });
       toast.success("User deleted successfully");
       // Refresh users list if implemented
     } catch (error) {

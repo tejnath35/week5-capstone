@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { apiClient } from '../services/apiClient';
 import axios from 'axios';
 import { useNavigate } from "react-router";
 import { useAuth } from "../Rstore/authStore";
+
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
 
 function AuthorArticles() {
   const navigate = useNavigate();
   const user = useAuth((state) => state.currentUser);
 
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,9 +20,10 @@ function AuthorArticles() {
       setLoading(true);
 
       try {
-        const res = await apiClient.get(`/author-api/articles/${user._id}`,
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${API_URL}/author-api/articles/${user._id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        });
 
         setArticles(res.data.payload);
       } catch (err) {

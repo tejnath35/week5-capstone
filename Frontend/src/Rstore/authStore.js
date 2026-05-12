@@ -1,5 +1,7 @@
 import { create } from "zustand";
-import { apiClient, API_ENDPOINTS } from "../services/apiClient";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
 
 export const useAuth = create((set) => ({
   currentUser: null,
@@ -14,7 +16,10 @@ export const useAuth = create((set) => ({
     try {
       set({ loading: true, error: null });
 
-      const res = await apiClient.post(API_ENDPOINTS.LOGIN, userCredObj);
+      const res = await axios.post(`${API_URL}/common-api/login`, userCredObj, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true
+      });
 
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
@@ -41,7 +46,10 @@ export const useAuth = create((set) => ({
     try {
       set({ loading: true, error: null });
 
-      await apiClient.get(API_ENDPOINTS.LOGOUT);
+      await axios.get(`${API_URL}/common-api/logout`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true
+      });
 
       localStorage.removeItem("token");
 
@@ -66,7 +74,10 @@ export const useAuth = create((set) => ({
     try {
       set({ loading: true });
 
-      const res = await apiClient.get(API_ENDPOINTS.CHECK_AUTH);
+      const res = await axios.get(`${API_URL}/common-api/check-auth`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true
+      });
 
       set({
         currentUser: res.data.payload,

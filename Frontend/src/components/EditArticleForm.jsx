@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useEffect } from "react";
-import { apiClient } from '../services/apiClient';
 import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
 import { toast } from "react-hot-toast";
 
 function EditArticle() {
@@ -25,8 +26,7 @@ function EditArticle() {
       navigate("/author-profile");
       return;
     }
-
-    setValue("title", article.title);
+    setValue("title", article.title);
     setValue("category", article.category);
     setValue("content", article.content);
   }, [article, setValue, navigate]);
@@ -42,9 +42,12 @@ function EditArticle() {
         author: article.author,
       };
 
-      await apiClient.put("/author-api/articles",
+      await axios.put(`${API_URL}/author-api/articles`,
         updatedData,
-        { withCredentials: true }
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        }
       );
 
       toast.success("Article updated successfully");

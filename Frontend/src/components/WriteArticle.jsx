@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { apiClient } from '../services/apiClient';
 import axios from 'axios';
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { useAuth } from "../Rstore/authStore";
+
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
 
 function WriteArticle() {
   const navigate = useNavigate();
@@ -25,9 +26,12 @@ function WriteArticle() {
     articleObj.author = currentUser._id;
 
     try {
-      await apiClient.post("/author-api/articles",
+      await axios.post(`${API_URL}/author-api/articles`,
         articleObj,
-        { withCredentials: true }
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        }
       );
 
       toast.success("Article published successfully!");

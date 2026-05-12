@@ -1,7 +1,8 @@
 import { NavLink, Outlet } from "react-router";
 import { useEffect, useState } from "react";
-import { apiClient } from '../services/apiClient';
 import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
 
 function AuthorProfile() {
   const [author, setAuthor] = useState({ firstName: "", lastName: "", email: "" });
@@ -9,9 +10,10 @@ function AuthorProfile() {
   useEffect(() => {
     const fetchAuthorProfile = async () => {
       try {
-        const res = await apiClient.get("/author-api/profile",
-          { withCredentials: true }
-        );
+        const res = await axios.get(`${API_URL}/author-api/profile`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true
+        });
         setAuthor(res.data.payload);
       } catch (err) {
         console.error("Error fetching profile:", err);
