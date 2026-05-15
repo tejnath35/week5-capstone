@@ -37,7 +37,7 @@ function AuthorArticles() {
     getAuthorArticles();
   }, [user]);
 
-  // ✅ FIX: allow opening even if deleted
+
   const openArticle = (article) => {
     navigate(`/article/${article._id}`, {
       state: article,

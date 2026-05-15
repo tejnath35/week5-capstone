@@ -15,10 +15,9 @@ dotenv.config();
 const app = express();
 app.set("trust proxy", 1);
 
-// ✅ CORS
 const corsOptions = {
   origin: function (origin, callback) {
-    callback(null, true); // Allow all origins for now to prevent CORS blocking issues
+    callback(null, true); 
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -37,12 +36,11 @@ app.use("/author-api", authorRoute);
 app.use("/admin-api", adminRoute);
 app.use("/common-api", commonRoute);
 
-// Health check route (VERY IMPORTANT for Render)
+// Health check route 
 app.get("/", (req, res) => {
   res.send("Server is running 🚀");
 });
 
-// ✅ Connect DB and start server
 const startServer = async () => {
   try {
     if (!process.env.DB_URL) {
@@ -60,18 +58,16 @@ const startServer = async () => {
 
   } catch (err) {
     console.error("❌ Failed to start server:", err.message);
-    process.exit(1); // force crash so Render shows error
+    process.exit(1);
   }
 };
 
 startServer();
 
-// ❌ Invalid route
 app.use((req, res) => {
   res.status(404).json({ message: "Invalid path" });
 });
 
-// ❌ Global error handler
 app.use((err, req, res, next) => {
   console.error("Error:", err);
 

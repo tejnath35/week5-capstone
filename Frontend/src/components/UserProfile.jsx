@@ -40,7 +40,7 @@ function UserProfile() {
           withCredentials: true
         });
 
-        // ✅ FILTER ONLY ACTIVE ARTICLES
+        // FILTER ONLY ACTIVE ARTICLES
         const activeArticles = res.data.payload.filter(
           (article) => article.isArticleActive
         );
@@ -90,7 +90,7 @@ function UserProfile() {
     <div className="min-h-screen bg-gray-50 px-6 py-10">
       {/* User Profile Section */}
       <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-sm mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">User Profile</h2>
+        <h2 className="text-2xl font-bold text-blue-500 mb-6">User Profile</h2>
         <div className="grid md:grid-cols-2 gap-6">
           <div>
             <p className="text-gray-600 text-sm uppercase tracking-wide">User Name</p>

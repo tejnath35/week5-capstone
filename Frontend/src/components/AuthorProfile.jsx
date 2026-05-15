@@ -26,12 +26,12 @@ function AuthorProfile() {
   return (
     <div className="min-h-screen w-full p-5 m-auto ">
       <div>
-        <h1 className="text-4xl font-bold">Welcome to Dashboard</h1>
+        <h1 className="text-4xl text-blue-400 font-bold">Welcome to Dashboard</h1>
       </div>
 
       {/* Author Profile Section */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6 mt-6">
-        <div className="grid md:grid-cols-2 gap-6">
+      <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm mb-5 mt-5">
+        <div className="grid md:grid-cols-2 gap-4">
           <div>
             <p className="text-gray-600 text-sm uppercase tracking-wide">Author Name</p>
             <p className="text-xl font-semibold text-gray-800 mt-1">
@@ -73,7 +73,7 @@ function AuthorProfile() {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-gray-400 mb-6"></div>
+      <div className="border-t border-gray-400 mb-5"></div>
 
       {/* Nested route content */}
       <Outlet />

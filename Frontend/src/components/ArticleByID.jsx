@@ -16,7 +16,7 @@ function ArticleByID() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 🔁 fetch article if not present
+  //fetch article if not present
   useEffect(() => {
     if (article) return;
 
@@ -40,7 +40,7 @@ function ArticleByID() {
     getArticle();
   }, [id]);
 
-  // 📅 format date
+  // format date
   const formatDate = (date) => {
     return new Date(date).toLocaleString("en-IN", {
       timeZone: "Asia/Kolkata",
@@ -49,7 +49,7 @@ function ArticleByID() {
     });
   };
 
-  // ❌ DELETE (soft delete)
+  //  DELETE (soft delete)
   const deleteArticle = async () => {
     try {
       const res = await axios.patch(`${API_URL}/author-api/articles/${id}/status`,
@@ -60,13 +60,13 @@ function ArticleByID() {
         }
       );
 
-      setArticle(res.data.payload); // ✅ update UI
+      setArticle(res.data.payload); 
     } catch (err) {
       setError(err.response?.data?.error);
     }
   };
 
-  // ♻️ RESTORE
+  // RESTORE
   const restoreArticle = async () => {
     try {
       const res = await axios.patch(`${API_URL}/author-api/articles/${id}/status`,
@@ -83,12 +83,12 @@ function ArticleByID() {
     }
   };
 
-  // ✏️ EDIT
+  //EDIT
   const editArticle = (articleObj) => {
     navigate(`/edit-article/${articleObj._id}`, { state: articleObj });
   };
 
-  // ⏳ loading
+  // loading
   if (loading) {
     return (
       <p className="text-center text-lg font-semibold text-gray-600 mt-20">
@@ -97,7 +97,7 @@ function ArticleByID() {
     );
   }
 
-  // ❌ error
+  //  error
   if (error) {
     return <p className="text-center text-red-500 mt-20">{error}</p>;
   }
@@ -107,7 +107,7 @@ function ArticleByID() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
 
-      {/* 🔴 Deleted Banner */}
+      {/*Deleted Banner */}
       {!article.isArticleActive && (
         <div className="mb-6 p-3 bg-red-100 text-red-600 rounded-lg text-center font-medium">
           This article is deleted
@@ -135,7 +135,7 @@ function ArticleByID() {
         {article.content}
       </div>
 
-      {/* 👤 AUTHOR ACTIONS */}
+      {/* AUTHOR ACTIONS */}
       {user?.role === "AUTHOR" && (
         <div className="flex gap-4 mb-6">
 

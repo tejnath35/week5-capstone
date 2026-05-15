@@ -26,7 +26,8 @@ function EditArticle() {
       navigate("/author-profile");
       return;
     }
-    setValue("title", article.title);
+
+    setValue("title", article.title);
     setValue("category", article.category);
     setValue("content", article.content);
   }, [article, setValue, navigate]);

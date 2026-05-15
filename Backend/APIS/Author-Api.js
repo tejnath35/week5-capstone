@@ -105,7 +105,7 @@ authorRoute.patch(
   async (req, res) => {
     try {
       const { articleId } = req.params;
-      const { isArticleActive } = req.body; // ✅ dynamic
+      const { isArticleActive } = req.body; // 
 
       let article = await ArticleModel.findByIdAndUpdate(
         articleId,

@@ -18,8 +18,7 @@ function AdminProfile() {
     const getUsers = async () => {
       setLoading(true);
       try {
-        // Assuming there's an API to get all users, but since not, maybe get articles or something.
-        // For now, just show a message.
+      
       } catch (err) {
         setError(err.response?.data?.error || "Something went wrong");
       } finally {
