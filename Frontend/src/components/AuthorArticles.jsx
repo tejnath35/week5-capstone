@@ -77,12 +77,12 @@ function AuthorArticles() {
 
   return (
     <div className="px-4 py-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 justify-items-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
         {articles.map((article) => (
           <div
             key={article._id}
-            className={`bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition flex flex-col h-full w-full max-w-sm
+            className={`bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition flex flex-col h-full w-full max-w-sm mx-auto
               ${!article.isArticleActive ? "opacity-80 border-red-200" : ""}
             `}
           >
