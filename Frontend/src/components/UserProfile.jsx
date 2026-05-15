@@ -120,12 +120,12 @@ function UserProfile() {
       )}
 
       {/* Articles Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
 
         {articles.map((articleObj) => (
           <div
             key={articleObj._id}
-            className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition flex flex-col"
+            className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition flex flex-col w-full max-w-sm"
           >
 
             {/* Title */}
