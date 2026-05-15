@@ -82,7 +82,7 @@ function AuthorArticles() {
         {articles.map((article) => (
           <div
             key={article._id}
-            className={`bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition flex flex-col h-full w-full max-w-sm mx-auto
+            className={`bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition flex flex-col h-full
               ${!article.isArticleActive ? "opacity-80 border-red-200" : ""}
             `}
           >

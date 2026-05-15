@@ -125,7 +125,7 @@ function UserProfile() {
         {articles.map((articleObj) => (
           <div
             key={articleObj._id}
-            className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition flex flex-col w-full max-w-sm mx-auto"
+            className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition flex flex-col"
           >
 
             {/* Title */}
