@@ -13,7 +13,9 @@ function UserProfile() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [articles, setArticles] = useState([]);
-  const [user, setUser] = useState({ firstName: "", lastName: "", email: "" });
+  const [user, setUser] = useState({ firstName: "", lastName: "", email: "", profileImageUrl: "" });
+  const [isEditingPic, setIsEditingPic] = useState(false);
+  const [picUrlInput, setPicUrlInput] = useState("");
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -23,6 +25,7 @@ function UserProfile() {
           withCredentials: true
         });
         setUser(res.data.payload);
+        setPicUrlInput(res.data.payload.profileImageUrl || "");
       } catch (err) {
         console.error("Error fetching profile:", err);
       }
@@ -30,6 +33,21 @@ function UserProfile() {
 
     fetchUserProfile();
   }, []);
+
+  const handleUpdateProfilePic = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.put(`${API_URL}/user-api/profile-image`, { profileImageUrl: picUrlInput }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true
+      });
+      setUser(res.data.payload);
+      setIsEditingPic(false);
+      toast.success("Profile picture updated!");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update profile picture");
+    }
+  };
 
   useEffect(() => {
     const getArticles = async () => {
@@ -88,20 +106,65 @@ function UserProfile() {
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-10">
+      
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">Welcome to Dashboard</h1>
+
       {/* User Profile Section */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-8">
-        <h2 className="text-2xl font-bold text-blue-500 mb-6">User Profile</h2>
-        <div className="grid md:grid-cols-2 gap-5">
-          <div>
-            <p className="text-gray-600 text-sm uppercase tracking-wide">User Name</p>
-            <p className="text-xl font-semibold text-gray-800 mt-1">
-              {user.firstName} {user.lastName}
-            </p>
+      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-8 flex flex-col md:flex-row items-center gap-8">
+        
+        {/* Profile Picture */}
+        <div className="flex flex-col items-center">
+          <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 font-bold text-3xl overflow-hidden border-2 border-blue-200 shadow-sm relative group">
+            {user.profileImageUrl ? (
+              <img src={user.profileImageUrl} alt="Profile" className="w-full h-full object-cover" />
+            ) : (
+              <span>{user.firstName?.charAt(0) || "U"}</span>
+            )}
+            
+            {/* Hover overlay for changing picture */}
+            <div 
+              onClick={() => setIsEditingPic(!isEditingPic)}
+              className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+            >
+              <span className="text-white text-xs font-semibold">Edit</span>
+            </div>
           </div>
-          <div>
-            <p className="text-gray-600 text-sm uppercase tracking-wide">Email ID</p>
-            <p className="text-xl font-semibold text-gray-800 mt-1">{user.email}</p>
+        </div>
+
+        {/* User Details */}
+        <div className="flex-1 w-full">
+          <div className="grid md:grid-cols-2 gap-5">
+            <div>
+              <p className="text-gray-600 text-sm uppercase tracking-wide">User Name</p>
+              <p className="text-xl font-semibold text-gray-800 mt-1">
+                {user.firstName} {user.lastName}
+              </p>
+            </div>
+            <div>
+              <p className="text-gray-600 text-sm uppercase tracking-wide">Email ID</p>
+              <p className="text-xl font-semibold text-gray-800 mt-1">{user.email}</p>
+            </div>
           </div>
+          
+          {/* Profile Picture Edit Input */}
+          {isEditingPic && (
+            <form onSubmit={handleUpdateProfilePic} className="mt-6 flex gap-2 w-full max-w-md">
+              <input 
+                type="url" 
+                placeholder="Paste image URL here..."
+                value={picUrlInput}
+                onChange={(e) => setPicUrlInput(e.target.value)}
+                className="flex-grow border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                required
+              />
+              <button 
+                type="submit" 
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition"
+              >
+                Save
+              </button>
+            </form>
+          )}
         </div>
       </div>
 

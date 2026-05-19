@@ -1,4 +1,14 @@
 import {Schema,model} from 'mongoose'
+const replySchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "user"
+    },
+    comment: {
+        type: String
+    }
+}, { timestamps: true });
+
 const userCommentSchema=new Schema({
     user:{
         type:Schema.Types.ObjectId,
@@ -6,8 +16,17 @@ const userCommentSchema=new Schema({
     },
     comment:{
         type:String
-    }
-})
+    },
+    likes:[{
+        type:Schema.Types.ObjectId,
+        ref:"user"
+    }],
+    dislikes:[{
+        type:Schema.Types.ObjectId,
+        ref:"user"
+    }],
+    replies: [replySchema]
+}, { timestamps: true });
 
 const articalSchema=new Schema({
     author:{
@@ -27,6 +46,14 @@ const articalSchema=new Schema({
         type:String,
         required:[true,"content is required"]
     },
+    likes:[{
+        type:Schema.Types.ObjectId,
+        ref:"user"
+    }],
+    dislikes:[{
+        type:Schema.Types.ObjectId,
+        ref:"user"
+    }],
     comments:[userCommentSchema],
     isArticleActive:{
         type:Boolean,

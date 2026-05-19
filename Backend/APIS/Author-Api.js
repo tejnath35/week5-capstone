@@ -34,7 +34,31 @@ authorRoute.get("/profile", verifyToken("AUTHOR"), async (req, res) => {
   }
 });
 
+// update profile image
+authorRoute.put('/profile-image', verifyToken("AUTHOR", "ADMIN"), async (req, res) => {
+  try {
+    const userId = req.user.userid;
+    const { profileImageUrl } = req.body;
+    
+    if (!profileImageUrl) {
+      return res.status(400).json({ message: "profileImageUrl is required" });
+    }
 
+    const user = await UserTypeModel.findByIdAndUpdate(
+      userId,
+      { profileImageUrl },
+      { new: true }
+    ).select('-password');
+    
+    if (!user) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+    
+    res.status(200).json({ message: "Profile image updated", payload: user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 //Create article(protected route)
 authorRoute.post("/articles",verifyToken("AUTHOR") , async (req, res) => {
   //get article from req
