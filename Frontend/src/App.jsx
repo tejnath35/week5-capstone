@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
 const RootLayout = lazy(() => import("./components/RootLayout"));

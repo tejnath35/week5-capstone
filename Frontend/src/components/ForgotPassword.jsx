@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from 'axios';
 import { API_URL } from '../utils/api';

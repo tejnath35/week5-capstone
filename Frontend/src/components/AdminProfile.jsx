@@ -1,5 +1,5 @@
 import { useAuth } from "../Rstore/authStore";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import axios from 'axios';
 import { useEffect, useState } from "react";

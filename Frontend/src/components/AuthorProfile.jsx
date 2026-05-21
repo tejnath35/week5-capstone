@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { API_URL } from '../utils/api';
@@ -91,7 +91,7 @@ function AuthorProfile() {
                 placeholder="Paste image URL here..."
                 value={picUrlInput}
                 onChange={(e) => setPicUrlInput(e.target.value)}
-                className="flex-grow border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                className="grow border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
                 required
               />
               <button 
