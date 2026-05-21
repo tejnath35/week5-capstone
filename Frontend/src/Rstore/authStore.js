@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
+import { API_URL } from "../utils/api";
 
 export const useAuth = create((set) => ({
+
   currentUser: null,
   loading: true, // start with loading true
   isAuthenticated: false,

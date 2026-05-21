@@ -3,10 +3,10 @@ import { useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import axios from 'axios';
 import { useEffect, useState } from "react";
-
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
+import { API_URL } from '../utils/api';
 
 function UserProfile() {
+
   const logout = useAuth((state) => state.logout);
   const navigate = useNavigate();
 

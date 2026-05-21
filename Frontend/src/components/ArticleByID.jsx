@@ -2,10 +2,10 @@ import { useParams, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useAuth } from "../Rstore/authStore";
-
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
+import { API_URL } from '../utils/api';
 
 function ArticleByID() {
+
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
@@ -483,7 +483,7 @@ function ArticleByID() {
                   <form onSubmit={(e) => handleAddReply(e, c._id)} className="mt-4 flex gap-2">
                     <input 
                       type="text" 
-                      className="flex-grow border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm"
+                      className="grow border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500 text-sm"
                       placeholder="Write a reply..."
                       value={replyText}
                       onChange={(e) => setReplyText(e.target.value)}

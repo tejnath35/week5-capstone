@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router";
 import { useAuth } from "../Rstore/authStore";
-
-const API_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? "http://localhost:4000" : "https://week5-capstone.onrender.com");
+import { API_URL } from '../utils/api';
 
 function AuthorArticles() {
+
   const navigate = useNavigate();
   const user = useAuth((state) => state.currentUser);
 
