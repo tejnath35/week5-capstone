@@ -99,8 +99,7 @@ Example frontend components referenced:
 
 ## Deployed Link
 
-https://frontend-alpha-nine-sd0rzv1y1b.vercel.app/
-
+https://week5-capstone.vercel.app/
 ---
 
 If you want, I can also:
