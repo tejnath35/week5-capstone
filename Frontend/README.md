@@ -1,16 +1,110 @@
-# React + Vite
+# Blog App - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A blogging platform frontend built with React, Vite and Tailwind CSS. Includes user authentication, role-based access control, and article management for Users, Authors, and Admins.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Quick Start
 
-## React Compiler
+### Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js (v16 or higher)
+- npm
 
-## Expanding the ESLint configuration
+### Installation
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+# Clone the repository
+git clone <repository-url>
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`.
+
+---
+
+## Available Scripts
+
+```bash
+npm run dev      # Start development server with hot reload
+npm run build    # Build for production
+npm run preview  # Preview production build locally
+npm run lint     # Run ESLint
+```
+
+---
+
+## Tech Stack
+
+- **React** — UI library
+- **Vite** — Build tool & dev server
+- **React Router** — Routing
+- **Tailwind CSS** — Utility-first styling
+- **Zustand** — State management
+- **Axios** — HTTP client
+- **React Hook Form** — Form handling
+- **React Hot Toast** — Notifications
+
+---
+
+## Project Structure
+
+```
+src/
+├── components/      # React components (Header, Footer, Pages...)
+├── Rstore/          # Zustand auth store
+├── Styles/          # Styling utilities
+├── assets/          # Images & fonts
+├── App.jsx          # Root component
+└── main.jsx         # Entry point
+```
+
+---
+
+## User Roles & Features
+
+- **User** — Read articles, manage profile
+- **Author** — User features + create/edit articles
+- **Admin** — Full access including content moderation
+
+---
+
+## API Configuration
+
+- **Backend URL:** https://week5-capstone.onrender.com
+Main endpoints used by the frontend:
+
+- `POST /common-api/login` — Login
+- `POST /common-api/register` — Register
+- `GET /common-api/check-auth` — Verify session
+- `GET /api/articles` — Get all articles
+- `POST /api/articles` — Create article (Author/Admin)
+
+Example frontend components referenced:
+
+- `ArticleByID.jsx` — Single article view
+- `AuthorArticles.jsx` — Author's article list
+- `EditArticleForm.jsx` — Article editor
+- `Header.jsx`, `Footer.jsx` — Layout
+- `Home.jsx`, `Login.jsx`, `Register.jsx` — Pages
+
+
+---
+
+## Deployed Link
+
+https://frontend-alpha-nine-sd0rzv1y1b.vercel.app/
+
+---
+
+If you want, I can also:
+
+- add usage examples for the API
+- update `package.json` scripts or dependency versions
+- run the dev server to verify locally
