@@ -5,12 +5,13 @@ import { useEffect } from "react";
 import { useAuth } from "../Rstore/authStore";
 
 function RootLayout() {
-  const checkAuth = useAuth((state) => state.checkAuth);
   const loading = useAuth((state) => state.loading);
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    // Call the store action directly so the effect doesn't depend on a
+    // function reference that may change between renders (prevents loop).
+    useAuth.getState().checkAuth();
+  }, []);
 
   if (loading) {
     return (

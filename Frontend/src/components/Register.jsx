@@ -9,6 +9,7 @@ function Register() {
   const { register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const onUserRegister = async (newUser) => {
@@ -154,12 +155,32 @@ function Register() {
             Password
           </label>
 
-          <input
-            type="password"
-            {...register("password")}
-            placeholder="Min. 8 characters"
-            className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
-          />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                {...register("password")}
+                placeholder="Min. 8 characters"
+                className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword((s) => !s)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10a9.97 9.97 0 012.024-5.81M6.1 6.1A9.97 9.97 0 0112 3c5.523 0 10 4.477 10 10 0 1.27-.214 2.485-.61 3.62M3 3l18 18" />
+                  </svg>
+                ) : (
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                )}
+              </button>
+            </div>
         </div>
 
         {/* Profile Image URL */}
