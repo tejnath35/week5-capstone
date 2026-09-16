@@ -39,7 +39,7 @@ function Login() {
   }, [isAuthenticated, currentUser, navigate]);
 
   return (
-    <div className="min-h-screen px-4 w-full flex items-center justify-center bg-linear-to-br from-blue-50 via-white to-blue-100">
+    <div className="min-h-screen px-4 w-full flex items-center justify-center bg-linear-to-br from-cyan-50 via-white to-slate-100">
 
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-10 w-full max-w-md">
 
@@ -68,7 +68,7 @@ function Login() {
               {...register("email", { required: true })}
               placeholder="you@example.com"
               onChange={() => useAuth.setState({ error: null })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
             />
           </div>
 
@@ -84,7 +84,7 @@ function Login() {
                 {...register("password", { required: true })}
                 placeholder="••••••••"
                 onChange={() => useAuth.setState({ error: null })}
-                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400"
               />
 
               <button
@@ -111,7 +111,7 @@ function Login() {
           <div className="text-right mb-5">
             <NavLink
               to="/forgot-password"
-              className="text-blue-600 text-xs hover:text-blue-800"
+              className="text-cyan-700 text-xs hover:text-cyan-900"
             >
               Forgot password?
             </NavLink>
@@ -121,7 +121,7 @@ function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50"
+            className="w-full bg-cyan-600 text-white py-2.5 rounded-lg font-bold hover:bg-cyan-700 transition disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Sign In"}
           </button>
@@ -132,7 +132,7 @@ function Login() {
           Don't have an account?{" "}
           <NavLink
             to="/register"
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-cyan-700 hover:text-cyan-900 font-medium"
           >
             Create one
           </NavLink>

@@ -49,18 +49,18 @@ function Register() {
 
   if (loading) {
     return (
-      <p className="text-center text-lg font-semibold text-violet-600 mt-20">
+      <p className="text-center text-lg font-semibold text-cyan-700 mt-20">
         Loading...
       </p>
     );
   }
 
   return (
-  <div className="min-h-screen px-4 py-10 w-full m-auto flex items-center justify-center bg-linear-to-br from-violet-50 to-white">
-    <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-6 sm:p-8 border border-violet-100">
+  <div className="min-h-screen px-4 py-10 w-full m-auto flex items-center justify-center bg-linear-to-br from-cyan-50 to-slate-100">
+    <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-6 sm:p-8 border border-cyan-100">
 
       {/* Title */}
-      <h2 className="text-2xl font-bold text-center text-violet-700 mb-3">
+      <h2 className="text-2xl font-bold text-center text-cyan-800 mb-3">
         Create an Account
       </h2>
 
@@ -83,7 +83,7 @@ function Register() {
                 type="radio"
                 {...register("role")}
                 value="user"
-                className="accent-violet-600 w-4 h-4"
+                className="accent-cyan-600 w-4 h-4"
               />
               <span className="text-sm font-medium text-stone-700">
                 User
@@ -95,7 +95,7 @@ function Register() {
                 type="radio"
                 {...register("role")}
                 value="author"
-                className="accent-violet-600 w-4 h-4"
+                className="accent-cyan-600 w-4 h-4"
               />
               <span className="text-sm font-medium text-stone-700">
                 Author
@@ -117,7 +117,7 @@ function Register() {
               type="text"
               {...register("firstName")}
               placeholder="First name"
-              className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
+              className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none"
             />
           </div>
 
@@ -145,7 +145,7 @@ function Register() {
             type="email"
             {...register("email")}
             placeholder="you@example.com"
-            className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
+            className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none"
           />
         </div>
 
@@ -160,7 +160,7 @@ function Register() {
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
                 placeholder="Min. 8 characters"
-                className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
+                className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none"
               />
 
               <button
@@ -193,14 +193,14 @@ function Register() {
             type="text"
             {...register("profileImageUrl")}
             placeholder="https://example.com/avatar.png"
-            className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-violet-400 focus:outline-none"
+            className="w-full mt-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-cyan-400 focus:outline-none"
           />
         </div>
 
         {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-violet-600 text-white py-2.5 rounded-lg font-semibold hover:bg-violet-700 transition"
+          className="w-full bg-cyan-600 text-white py-2.5 rounded-lg font-bold hover:bg-cyan-700 transition"
         >
           Create Account
         </button>
@@ -211,7 +211,7 @@ function Register() {
         Already have an account?{" "}
         <NavLink
           to="/login"
-          className="text-violet-600 font-semibold hover:text-violet-500"
+          className="text-cyan-700 font-semibold hover:text-cyan-900"
         >
           Sign in
         </NavLink>

@@ -63,7 +63,7 @@ function ForgotPassword() {
           {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition"
+            className="w-full bg-cyan-600 text-white py-2.5 rounded-lg font-bold hover:bg-cyan-700 transition"
           >
             Reset Password
           </button>
@@ -74,7 +74,7 @@ function ForgotPassword() {
           Remember your password?{" "}
           <NavLink
             to="/login"
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            className="text-cyan-700 hover:text-cyan-900 font-medium"
           >
             Sign In
           </NavLink>

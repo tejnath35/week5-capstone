@@ -90,7 +90,7 @@ function AuthorArticles() {
 
               {/* Top row */}
               <div className="flex justify-between items-center">
-                <p className="text-xs text-violet-600 font-semibold uppercase">
+                <p className="text-xs text-cyan-700 font-semibold uppercase">
                   {article.category}
                 </p>
 
@@ -106,6 +106,10 @@ function AuthorArticles() {
                 {article.title}
               </p>
 
+              <p className="text-sm font-bold text-cyan-700">
+                By {`${user.firstName || ""} ${user.lastName || ""}`.trim() || "You"}
+              </p>
+
               {/* Content preview */}
               <p className="text-sm text-gray-600 wrap-break-word line-clamp-3">
                 {article.content}
@@ -119,7 +123,7 @@ function AuthorArticles() {
 
             {/* ✅ Single clean button */}
             <button
-              className="mt-auto pt-4 text-blue-600 text-sm font-medium hover:text-blue-800"
+              className="mt-auto pt-4 text-cyan-700 text-sm font-bold hover:text-cyan-900"
               onClick={() => openArticle(article)}
             >
               Read Article →

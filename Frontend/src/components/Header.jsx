@@ -48,7 +48,7 @@ function Header() {
               end
               className={({ isActive }) =>
                 isActive
-                  ? "text-blue-600 font-medium"
+                  ? "text-cyan-700 font-bold"
                   : "text-gray-600 hover:text-gray-900 transition font-semibold"
               }
             >
@@ -64,7 +64,7 @@ function Header() {
                   to="/register"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-600 font-medium"
+                      ? "text-cyan-700 font-bold"
                       : "text-gray-600 hover:text-gray-900 transition font-semibold"
                   }
                 >
@@ -77,7 +77,7 @@ function Header() {
                   to="/login"
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-600 font-medium"
+                      ? "text-cyan-700 font-bold"
                       : "text-gray-600 hover:text-gray-900 transition font-semibold"
                   }
                 >
@@ -93,7 +93,7 @@ function Header() {
                   to={getProfilePath()}
                   className={({ isActive }) =>
                     isActive
-                      ? "text-blue-600 font-medium"
+                      ? "text-cyan-700 font-bold"
                       : "text-gray-600 hover:text-gray-900 transition"
                   }
                 >

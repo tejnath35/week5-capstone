@@ -51,7 +51,16 @@ function WriteArticle() {
 
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-10 w-full max-w-2xl">
 
-        <h2 className="text-2xl font-bold text-violet-700 mb-6 text-center">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:border-cyan-500 hover:text-cyan-700"
+        >
+          <span aria-hidden="true">←</span>
+          Back
+        </button>
+
+        <h2 className="text-2xl font-bold text-cyan-800 mb-6 text-center">
           Write New Article
         </h2>
 
@@ -100,6 +109,16 @@ function WriteArticle() {
               <option value="programming">Programming</option>
               <option value="ai">AI</option>
               <option value="web-development">Web Development</option>
+              <option value="business">Business</option>
+              <option value="education">Education</option>
+              <option value="finance">Finance</option>
+              <option value="health">Health</option>
+              <option value="lifestyle">Lifestyle</option>
+              <option value="productivity">Productivity</option>
+              <option value="science">Science</option>
+              <option value="travel">Travel</option>
+              <option value="culture">Culture</option>
+              <option value="entertainment">Entertainment</option>
             </select>
 
             {errors.category && (
@@ -139,7 +158,7 @@ function WriteArticle() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-violet-600 text-white py-2.5 rounded-lg font-semibold hover:bg-violet-700 transition"
+            className="w-full bg-cyan-600 text-white py-2.5 rounded-lg font-bold hover:bg-cyan-700 transition"
           >
             {loading ? "Publishing..." : "Publish Article"}
           </button>

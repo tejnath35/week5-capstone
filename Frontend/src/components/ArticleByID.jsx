@@ -251,6 +251,15 @@ function ArticleByID() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
 
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="mb-8 inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:border-cyan-500 hover:text-cyan-700"
+      >
+        <span aria-hidden="true">←</span>
+        Back
+      </button>
+
       {/*Deleted Banner */}
       {!article.isArticleActive && (
         <div className="mb-6 p-3 bg-red-100 text-red-600 rounded-lg text-center font-medium">
@@ -260,7 +269,7 @@ function ArticleByID() {
 
       {/* Header */}
       <div className="mb-8 border-b pb-6">
-        <span className="text-sm font-semibold text-violet-600 uppercase">
+        <span className="text-sm font-semibold text-cyan-700 uppercase">
           {article.category}
         </span>
 
@@ -325,7 +334,7 @@ function ArticleByID() {
       <div className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-200">
         <button 
           onClick={handleLike}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${article.likes?.includes(user?._id) ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+          className={`flex items-center gap-2 px-4 py-2 rounded-full transition-colors ${article.likes?.includes(user?._id) ? 'bg-cyan-100 text-cyan-700' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
         >
           <span className="text-xl">👍</span>
           <span className="font-semibold">{article.likes?.length || 0}</span>
@@ -357,7 +366,7 @@ function ArticleByID() {
             <div className="flex justify-end mt-2">
               <button 
                 type="submit" 
-                className="bg-violet-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-violet-700 transition"
+                className="bg-cyan-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-cyan-700 transition"
               >
                 Post Comment
               </button>
@@ -376,7 +385,7 @@ function ArticleByID() {
               <div key={c._id} className="bg-gray-50 p-5 rounded-xl border border-gray-100 shadow-sm">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-violet-200 flex items-center justify-center text-violet-700 font-bold">
+                    <div className="w-10 h-10 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold">
                       {c.user?.firstName?.charAt(0) || "U"}
                     </div>
                     <div>
@@ -393,7 +402,7 @@ function ArticleByID() {
                             setEditingCommentId(c._id);
                             setEditCommentText(c.comment);
                           }}
-                          className="text-blue-500 text-sm font-medium hover:text-blue-700 transition"
+                          className="text-cyan-700 text-sm font-medium hover:text-cyan-900 transition"
                         >
                           Edit
                         </button>
@@ -429,7 +438,7 @@ function ArticleByID() {
                       </button>
                       <button 
                         type="submit" 
-                        className="bg-blue-600 text-white px-4 py-1 rounded text-sm font-medium hover:bg-blue-700 transition"
+                        className="bg-cyan-600 text-white px-4 py-1 rounded text-sm font-medium hover:bg-cyan-700 transition"
                       >
                         Save
                       </button>
@@ -443,7 +452,7 @@ function ArticleByID() {
                 <div className="flex items-center gap-4 mb-2">
                   <button 
                     onClick={() => handleCommentLike(c._id)}
-                    className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${c.likes?.includes(user?._id) ? 'bg-blue-100 text-blue-700' : 'text-gray-500 hover:bg-gray-100'}`}
+                    className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${c.likes?.includes(user?._id) ? 'bg-cyan-100 text-cyan-700' : 'text-gray-500 hover:bg-gray-100'}`}
                   >
                     <span>👍</span>
                     <span>{c.likes?.length || 0}</span>
@@ -462,7 +471,7 @@ function ArticleByID() {
                         setReplyingTo(replyingTo === c._id ? null : c._id);
                         setReplyText("");
                       }}
-                      className="text-violet-600 text-xs font-medium hover:text-violet-800 transition"
+                      className="text-cyan-700 text-xs font-medium hover:text-cyan-900 transition"
                     >
                       {replyingTo === c._id ? "Cancel Reply" : "Reply"}
                     </button>
@@ -492,7 +501,7 @@ function ArticleByID() {
                     />
                     <button 
                       type="submit"
-                      className="bg-violet-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-violet-700 transition"
+                      className="bg-cyan-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-cyan-700 transition"
                     >
                       Post
                     </button>
@@ -505,7 +514,7 @@ function ArticleByID() {
                     {c.replies.map((reply) => (
                       <div key={reply._id} className="bg-white p-3 rounded-lg border border-gray-100 shadow-sm">
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xs">
+                          <div className="w-6 h-6 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 font-bold text-xs">
                             {reply.user?.firstName?.charAt(0) || "U"}
                           </div>
                           <div className="font-semibold text-gray-800 text-sm">

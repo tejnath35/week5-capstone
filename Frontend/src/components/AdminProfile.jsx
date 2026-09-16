@@ -53,44 +53,48 @@ function AdminProfile() {
 
   if (loading) {
     return (
-      <p className="text-center text-lg font-semibold text-gray-600 mt-20">
+      <p className="text-center text-lg font-semibold text-slate-500 mt-20">
         Loading...
       </p>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10">
+    <div className="min-h-screen w-full bg-slate-50 px-6 py-10 sm:px-10 lg:px-16">
+      <div className="mx-auto max-w-6xl">
+      <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-700">MyBlog / Control room</p>
+      <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-950">Admin dashboard</h1>
 
       {error && (
-        <p className="text-red-500 text-center mb-6">{error}</p>
+        <p className="mb-6 text-center text-red-600">{error}</p>
       )}
 
       {/* Logout */}
-      <div className="flex justify-end mb-6">
+      <div className="mb-8 flex justify-end">
         <button
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          className="rounded-full bg-slate-950 px-5 py-2.5 text-sm font-bold text-white transition hover:bg-cyan-700"
           onClick={onLogout}
         >
           Logout
         </button>
       </div>
 
-      <h2 className="text-2xl font-bold mb-6">Admin Dashboard</h2>
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 className="mb-3 text-2xl font-bold text-slate-950">Manage users</h2>
 
-      <p>Admin functionalities can be added here, such as managing users.</p>
+      <p className="text-slate-600">Admin functionalities can be added here, such as managing users.</p>
 
       {/* Example: Delete user by ID */}
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-4">Delete User</h3>
+      <div className="mt-8 border-t border-slate-200 pt-6">
+        <h3 className="mb-4 text-lg font-bold text-slate-950">Delete User</h3>
         <input
           type="text"
           placeholder="Enter User ID"
-          className="border border-gray-300 rounded-lg px-4 py-2 mr-4"
+          className="mr-4 rounded-lg border border-slate-300 px-4 py-2 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
           id="userIdInput"
         />
         <button
-          className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+          className="rounded-lg bg-red-600 px-4 py-2 font-bold text-white transition hover:bg-red-700"
           onClick={() => {
             const userId = document.getElementById('userIdInput').value;
             if (userId) onDeleteUser(userId);
@@ -99,7 +103,9 @@ function AdminProfile() {
           Delete User
         </button>
       </div>
+      </section>
 
+      </div>
     </div>
   );
 }
