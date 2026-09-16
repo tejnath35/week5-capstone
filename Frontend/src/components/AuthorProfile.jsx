@@ -49,7 +49,6 @@ function AuthorProfile() {
       <div className="mx-auto max-w-6xl">
         <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-700">MyBlog / Creator space</p>
         <h1 className="mt-2 text-4xl font-bold tracking-tight text-slate-950">Welcome to your dashboard</h1>
-      </div>
 
       {/* Author Profile Section */}
       <div className="mb-5 mt-8 flex flex-col items-center gap-8 rounded-2xl border border-slate-200 bg-slate-950 p-6 text-white shadow-xl md:flex-row">
@@ -133,6 +132,7 @@ function AuthorProfile() {
       {/* Nested route content */}
       <Outlet />
 
+      </div>
     </div>
   );
 }

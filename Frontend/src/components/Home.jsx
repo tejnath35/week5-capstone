@@ -10,7 +10,7 @@ function Home() {
   const [articles, setArticles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchBy, setSearchBy] = useState("article");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(isAuthenticated);
   const [error, setError] = useState("");
 
   const roleRoutes = {
@@ -26,6 +26,12 @@ function Home() {
   };
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setArticles([]);
+      setLoading(false);
+      return;
+    }
+
     const getArticles = async () => {
       try {
         const response = await axios.get(`${API_URL}/common-api/articles`);
@@ -38,7 +44,7 @@ function Home() {
     };
 
     getArticles();
-  }, []);
+  }, [isAuthenticated]);
 
   const filteredArticles = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();
@@ -84,7 +90,8 @@ function Home() {
         </div>
       </section>
 
-      <main className="mx-auto max-w-6xl px-6 py-10 sm:px-10 lg:px-16">
+      {isAuthenticated ? (
+        <main className="mx-auto max-w-6xl px-6 py-10 sm:px-10 lg:px-16">
         <div className="mb-8 flex flex-col gap-4 border-b border-slate-200 pb-8 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm font-semibold uppercase tracking-wider text-cyan-700">Latest writing</p>
@@ -126,7 +133,36 @@ function Home() {
             ))}
           </div>
         )}
-      </main>
+        </main>
+      ) : (
+        <section className="mx-auto max-w-5xl px-6 py-16 sm:px-10">
+          <div className="grid items-center gap-10 md:grid-cols-[0.85fr_1.15fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-700">Members only</p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-950">Log in to read the articles</h2>
+              <p className="mt-4 leading-7 text-slate-600">Sign in to explore the article library, search by topic or author, and join the conversation.</p>
+              <button onClick={() => navigate("/login")} className="mt-7 rounded-full bg-cyan-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-cyan-700">Log in to continue</button>
+            </div>
+
+            <article className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 text-left shadow-xl">
+              <div className="absolute right-0 top-0 h-24 w-24 rounded-bl-full bg-cyan-100" aria-hidden="true"></div>
+              <div className="relative">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="rounded-full bg-cyan-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-cyan-700">Example article</span>
+                  <span className="text-sm text-slate-400" aria-label="Article locked">Locked</span>
+                </div>
+                <h3 className="mt-5 text-2xl font-bold leading-snug text-slate-950">Building a writing habit that lasts</h3>
+                <p className="mt-3 text-sm font-bold text-cyan-700">By MyBlog Editorial</p>
+                <p className="mt-4 leading-7 text-slate-600">Small, consistent writing sessions can turn scattered ideas into work you are proud to share. Discover a simple rhythm for making room to think.</p>
+                <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Preview only</span>
+                  <button onClick={() => navigate("/login")} className="text-sm font-bold text-cyan-700 transition hover:text-cyan-900">Unlock with login</button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
