@@ -33,6 +33,32 @@ userRoute.get('/profile', verifyToken("USER"), async (req, res) => {
   }
 });
 
+// update user profile details
+userRoute.put('/profile', verifyToken("USER"), async (req, res) => {
+  try {
+    const userId = req.user.userid;
+    const { firstName, lastName, profileImageUrl } = req.body;
+
+    if (!firstName?.trim()) {
+      return res.status(400).json({ message: "First name is required" });
+    }
+
+    const user = await UserTypeModel.findByIdAndUpdate(
+      userId,
+      { firstName: firstName.trim(), lastName: lastName?.trim() || "", profileImageUrl: profileImageUrl?.trim() || "" },
+      { new: true, runValidators: true }
+    ).select('firstName lastName email profileImageUrl');
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Profile updated", payload: user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // update profile image
 userRoute.put('/profile-image', verifyToken("USER", "AUTHOR", "ADMIN"), async (req, res) => {
   try {
@@ -62,7 +88,7 @@ userRoute.put('/profile-image', verifyToken("USER", "AUTHOR", "ADMIN"), async (r
 // read all articles
 userRoute.get('/articles', verifyToken("USER"), async (req, res) => {
   try {
-    const articles = await ArticleModel.find();
+    const articles = await ArticleModel.find().populate('author', 'firstName lastName');
     res.status(200).json({ message: "articles", payload: articles });
   } catch (error) {
     res.status(500).json({ message: error.message });

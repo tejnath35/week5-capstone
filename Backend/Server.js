@@ -38,7 +38,7 @@ app.use("/common-api", commonRoute);
 
 // Health check route 
 app.get("/", (req, res) => {
-  res.send("Server is running 🚀");
+  res.send("Server is running");
 });
 
 const startServer = async () => {
@@ -48,16 +48,16 @@ const startServer = async () => {
     }
 
     await mongoose.connect(process.env.DB_URL);
-    console.log("✅ MongoDB connected");
+    console.log("MongoDB connected");
 
     const PORT = process.env.PORT || 4000;
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`Server running on port ${PORT}`);
     });
 
   } catch (err) {
-    console.error("❌ Failed to start server:", err.message);
+    console.error("Failed to start server:", err.message);
     process.exit(1);
   }
 };

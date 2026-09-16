@@ -4,6 +4,21 @@ import { verifyToken } from "../Middlewares/verifyToken.js";
 import { authenticate } from "../Services/Auth-Service.js";
 import { UserTypeModel } from "../Models/User-Model.js";
 import bcrypt from "bcryptjs";
+import { ArticleModel } from "../Models/Artical-Model.js";
+
+// Public read-only feed used by the home page.
+commonRoute.get("/articles", async (req, res) => {
+  try {
+    const articles = await ArticleModel.find({ isArticleActive: true })
+      .populate("author", "firstName lastName")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({ message: "articles", payload: articles });
+  } catch (error) {
+    res.status(500).json({ error: error.message || "Failed to fetch articles" });
+  }
+});
+
 //login
 commonRoute.post("/login", async (req, res) => {
   try {

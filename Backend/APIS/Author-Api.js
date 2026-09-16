@@ -23,12 +23,13 @@ authorRoute.get("/profile", verifyToken("AUTHOR"), async (req, res) => {
   try {
     const userId = req.user.userid;
     const user = await UserTypeModel.findById(userId).select('firstName lastName email profileImageUrl');
+    const articleCount = await ArticleModel.countDocuments({ author: userId, isArticleActive: true });
     
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
     
-    res.status(200).json({ message: "Author profile", payload: user });
+    res.status(200).json({ message: "Author profile", payload: { ...user.toObject(), articleCount } });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -55,6 +56,32 @@ authorRoute.put('/profile-image', verifyToken("AUTHOR", "ADMIN"), async (req, re
     }
     
     res.status(200).json({ message: "Profile image updated", payload: user });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// update author profile details
+authorRoute.put('/profile', verifyToken("AUTHOR"), async (req, res) => {
+  try {
+    const userId = req.user.userid;
+    const { firstName, lastName, profileImageUrl } = req.body;
+
+    if (!firstName?.trim()) {
+      return res.status(400).json({ message: "First name is required" });
+    }
+
+    const user = await UserTypeModel.findByIdAndUpdate(
+      userId,
+      { firstName: firstName.trim(), lastName: lastName?.trim() || "", profileImageUrl: profileImageUrl?.trim() || "" },
+      { new: true, runValidators: true }
+    ).select('firstName lastName email profileImageUrl');
+
+    if (!user) {
+      return res.status(404).json({ message: "Author not found" });
+    }
+
+    res.status(200).json({ message: "Profile updated", payload: user });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
