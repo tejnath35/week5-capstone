@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 import { ArticleModel } from "../Models/Artical-Model.js";
 
 // Public read-only feed used by the home page.
-commonRoute.get("/articles", async (req, res) => {
+commonRoute.get("/articles", verifyToken("USER", "AUTHOR", "ADMIN"), async (req, res) => {
   try {
     const articles = await ArticleModel.find({ isArticleActive: true })
       .populate("author", "firstName lastName")
