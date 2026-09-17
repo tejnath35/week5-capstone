@@ -16,12 +16,10 @@ function ForgotPassword() {
 
   const requestCode = async ({ email: submittedEmail }) => {
     try {
-      const response = await axios.post(`${API_URL}/common-api/forgot-password/request`, { email: submittedEmail });
+      await axios.post(`${API_URL}/common-api/forgot-password/request`, { email: submittedEmail });
       setEmail(submittedEmail);
       setStep(2);
-      toast.success(response.data.verificationCode
-        ? `Verification code: ${response.data.verificationCode}`
-        : "Verification code sent. Check your email.");
+      toast.success("Verification code sent to your email.");
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong. Please try again.");
     }

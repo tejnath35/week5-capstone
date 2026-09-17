@@ -21,6 +21,8 @@ function ArticleByID() {
   const [expandedReplies, setExpandedReplies] = useState({});
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editCommentText, setEditCommentText] = useState("");
+  const [editingReplyId, setEditingReplyId] = useState(null);
+  const [editReplyText, setEditReplyText] = useState("");
 
   //fetch article to get latest likes/comments
   useEffect(() => {
@@ -248,6 +250,35 @@ function ArticleByID() {
       setArticle(res.data.payload);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to add reply");
+    }
+  };
+
+  const handleEditReply = async (e, commentId, replyId) => {
+    e.preventDefault();
+    if (!editReplyText.trim()) return;
+
+    try {
+      const res = await axios.put(`${API_URL}/user-api/articles/${id}/comments/${commentId}/replies/${replyId}`, { comment: editReplyText }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      });
+      setArticle(res.data.payload);
+      setEditingReplyId(null);
+      setEditReplyText("");
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to edit reply");
+    }
+  };
+
+  const handleDeleteReply = async (commentId, replyId) => {
+    try {
+      const res = await axios.delete(`${API_URL}/user-api/articles/${id}/comments/${commentId}/replies/${replyId}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      });
+      setArticle(res.data.payload);
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to delete reply");
     }
   };
 
@@ -614,7 +645,34 @@ function ArticleByID() {
                             {reply.user?.firstName || "Unknown User"} {reply.user?.lastName || ""}
                           </div>
                         </div>
-                        <p className="text-gray-600 text-sm pl-8">{reply.comment}</p>
+                        {editingReplyId === reply._id ? (
+                          <form onSubmit={(event) => handleEditReply(event, c._id, reply._id)} className="pl-8">
+                            <textarea
+                              value={editReplyText}
+                              onChange={(event) => setEditReplyText(event.target.value)}
+                              className="w-full resize-none rounded-lg border border-gray-300 p-2 text-sm outline-none focus:border-cyan-500"
+                              rows="2"
+                              required
+                              autoFocus
+                            />
+                            <div className="mt-2 flex gap-3">
+                              <button type="submit" className="text-sm font-medium text-cyan-700 hover:text-cyan-900">Save</button>
+                              <button type="button" onClick={() => setEditingReplyId(null)} className="text-sm font-medium text-gray-500 hover:text-gray-700">Cancel</button>
+                            </div>
+                          </form>
+                        ) : (
+                          <div className="flex items-start justify-between gap-3 pl-8">
+                            <p className="text-gray-600 text-sm">{reply.comment}</p>
+                            {user && (user._id === reply.user?._id || user._id === article.author?._id) && (
+                              <div className="flex shrink-0 gap-2">
+                                {user._id === reply.user?._id && (
+                                  <button type="button" onClick={() => { setEditingReplyId(reply._id); setEditReplyText(reply.comment); }} className="text-xs font-medium text-cyan-700 hover:text-cyan-900">Edit</button>
+                                )}
+                                <button type="button" onClick={() => handleDeleteReply(c._id, reply._id)} className="text-xs font-medium text-red-500 hover:text-red-700">Delete</button>
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
