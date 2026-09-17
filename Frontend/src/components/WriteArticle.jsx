@@ -38,7 +38,7 @@ function WriteArticle() {
 
       reset();
 
-      navigate("/author-profile/articles");
+      navigate("/articles");
     } catch (err) {
       toast.error(err.response?.data?.error || "Failed to publish article");
     } finally {
@@ -47,21 +47,21 @@ function WriteArticle() {
   };
 
   return (
-    <div className="h-150 flex items-center justify-center m-auto pt-10">
+    <main className="min-h-[calc(100vh-4rem)] w-full flex-1 bg-slate-950 px-4 py-8 sm:px-8 lg:px-16">
 
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-10 w-full max-w-2xl">
+      <div className="mx-auto min-h-[calc(100vh-8rem)] w-full border border-cyan-200 bg-white px-6 py-8 shadow-xl sm:px-12 lg:px-20">
 
         <button
           type="button"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/articles")}
           className="mb-6 inline-flex items-center gap-2 rounded-full border border-slate-300 px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:border-cyan-500 hover:text-cyan-700"
         >
           <span aria-hidden="true">←</span>
           Back
         </button>
 
-        <h2 className="text-2xl font-bold text-cyan-800 mb-6 text-center">
-          Write New Article
+        <h2 className="mb-10 text-center font-serif text-4xl font-bold text-slate-950">
+          New article
         </h2>
 
         <form onSubmit={handleSubmit(submitArticle)}>
@@ -82,7 +82,7 @@ function WriteArticle() {
                   message: "Title must be at least 5 characters",
                 },
               })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-violet-400"
+              className="w-full border-0 border-b border-slate-300 bg-transparent px-0 py-3 text-3xl font-serif outline-none focus:border-cyan-600"
             />
 
             {errors.title && (
@@ -102,7 +102,7 @@ function WriteArticle() {
               {...register("category", {
                 required: "Category is required",
               })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-violet-400"
+              className="w-full border border-slate-300 bg-white px-4 py-3 outline-none focus:border-cyan-600"
             >
               <option value="">Select category</option>
               <option value="technology">Technology</option>
@@ -135,7 +135,7 @@ function WriteArticle() {
             </label>
 
             <textarea
-              rows="8"
+              rows="18"
               placeholder="Write your article content..."
               {...register("content", {
                 required: "Content is required",
@@ -144,7 +144,7 @@ function WriteArticle() {
                   message: "Content must be at least 50 characters",
                 },
               })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-violet-400"
+              className="w-full resize-none border-0 bg-transparent px-0 py-3 font-serif text-lg leading-8 text-slate-800 outline-none focus:ring-0"
             />
 
             {errors.content && (
@@ -158,7 +158,7 @@ function WriteArticle() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-cyan-600 text-white py-2.5 rounded-lg font-bold hover:bg-cyan-700 transition"
+            className="w-full rounded-lg bg-cyan-600 py-2.5 text-white font-bold transition hover:bg-cyan-700"
           >
             {loading ? "Publishing..." : "Publish Article"}
           </button>
@@ -171,7 +171,7 @@ function WriteArticle() {
         </form>
 
       </div>
-    </div>
+    </main>
   );
 }
 

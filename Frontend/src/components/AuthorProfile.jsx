@@ -1,10 +1,14 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import { API_URL } from '../utils/api';
+import ActivityPanel from './ActivityPanel';
+import { useAuth } from '../Rstore/authStore';
 
 function AuthorProfile() {
 
+  const navigate = useNavigate();
+  const logout = useAuth((state) => state.logout);
   const [author, setAuthor] = useState({ firstName: "", lastName: "", email: "", profileImageUrl: "" });
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileDraft, setProfileDraft] = useState({ firstName: "", lastName: "", profileImageUrl: "" });
@@ -42,6 +46,11 @@ function AuthorProfile() {
     } catch (err) {
       console.error("Failed to update profile", err);
     }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
 
   return (
@@ -84,9 +93,17 @@ function AuthorProfile() {
             </div>
           </div>
 
-          <button type="button" onClick={() => setIsEditingProfile(!isEditingProfile)} className="mt-5 rounded-lg border border-cyan-300 px-4 py-2 text-sm font-bold text-cyan-300 transition hover:bg-cyan-300 hover:text-slate-950">
-            {isEditingProfile ? "Cancel" : "Edit profile"}
-          </button>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <button type="button" onClick={() => setIsEditingProfile(!isEditingProfile)} className="rounded-lg border border-cyan-300 px-4 py-2 text-sm font-bold text-cyan-300 transition hover:bg-cyan-300 hover:text-slate-950">
+              {isEditingProfile ? "Cancel" : "Edit profile"}
+            </button>
+            <button type="button" onClick={() => navigate("/write-article")} className="rounded-lg bg-cyan-300 px-4 py-2 text-sm font-bold text-slate-950 transition hover:bg-cyan-200">
+              Write article
+            </button>
+            <button type="button" onClick={handleLogout} className="rounded-lg border border-red-300 px-4 py-2 text-sm font-bold text-red-200 transition hover:bg-red-500 hover:text-white">
+              Logout
+            </button>
+          </div>
 
           {isEditingProfile && (
             <form onSubmit={handleUpdateProfile} className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -99,38 +116,7 @@ function AuthorProfile() {
         </div>
       </div>
 
-      {/* Author Navigation */}
-      <div className="mt-8 mb-1 flex gap-6 font-bold">
-
-        <NavLink
-          to="articles"
-          className={({ isActive }) =>
-            isActive
-              ? "text-cyan-700 font-semibold border-b-2 border-cyan-600 pb-1"
-              : "text-slate-500 hover:text-cyan-700 pb-1"
-          }
-        >
-          Articles
-        </NavLink>
-
-        <NavLink
-          to="write-article"
-          className={({ isActive }) =>
-            isActive
-              ? "text-cyan-700 font-semibold border-b-2 border-cyan-600 pb-1"
-              : "text-slate-500 hover:text-cyan-700 pb-1"
-          }
-        >
-          Write Article
-        </NavLink>
-
-      </div>
-
-      {/* Divider */}
-      <div className="mb-5 border-t border-slate-200"></div>
-
-      {/* Nested route content */}
-      <Outlet />
+      <ActivityPanel />
 
       </div>
     </div>

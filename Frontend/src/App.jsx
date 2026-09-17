@@ -6,10 +6,10 @@ const RootLayout = lazy(() => import("./components/RootLayout"));
 const Register = lazy(() => import("./components/Register"));
 const Login = lazy(() => import("./components/Login"));
 const Home = lazy(() => import("./components/Home"));
+const Articles = lazy(() => import("./components/Articles"));
 const UserProfile = lazy(() => import("./components/UserProfile"));
 const AuthorProfile = lazy(() => import("./components/AuthorProfile"));
 const ArticleByID = lazy(() => import("./components/ArticleByID"));
-const AuthorArticles = lazy(() => import("./components/AuthorArticles"));
 const WriteArticle = lazy(() => import("./components/WriteArticle"));
 const EditArticle = lazy(() => import("./components/EditArticleForm"));
 const ForgotPassword = lazy(() => import("./components/ForgotPassword"));
@@ -23,6 +23,10 @@ function App() {
         {
           path: "",
           element: <Home />,
+        },
+        {
+          path: "articles",
+          element: <Articles />,
         },
         {
           path: "register",
@@ -43,24 +47,14 @@ function App() {
         {
           path: "author-profile",
           element: <AuthorProfile />,
-          children: [
-            {
-              index: true,
-              element: <AuthorArticles />,
-            },
-            {
-              path: "articles",
-              element: <AuthorArticles />,
-            },
-            {
-              path: "write-article",
-              element: <WriteArticle />,
-            },
-          ],
         },
         {
           path: "article/:id",
           element: <ArticleByID />,
+        },
+        {
+          path: "write-article",
+          element: <WriteArticle />,
         },
         {
           path:"edit-article/:id",

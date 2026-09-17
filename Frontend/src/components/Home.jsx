@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Rstore/authStore";
@@ -8,8 +8,6 @@ function Home() {
   const navigate = useNavigate();
   const { isAuthenticated, currentUser } = useAuth();
   const [articles, setArticles] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchBy, setSearchBy] = useState("article");
   const [loading, setLoading] = useState(isAuthenticated);
   const [error, setError] = useState("");
 
@@ -34,7 +32,10 @@ function Home() {
 
     const getArticles = async () => {
       try {
-        const response = await axios.get(`${API_URL}/common-api/articles`);
+        const response = await axios.get(`${API_URL}/common-api/articles`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+          withCredentials: true,
+        });
         setArticles(response.data.payload || []);
       } catch (err) {
         setError(err.response?.data?.error || "Unable to load articles right now.");
@@ -45,22 +46,6 @@ function Home() {
 
     getArticles();
   }, [isAuthenticated]);
-
-  const filteredArticles = useMemo(() => {
-    const query = searchTerm.trim().toLowerCase();
-    if (!query) return articles;
-
-    return articles.filter((article) => {
-      if (searchBy === "author") {
-        const authorName = `${article.author?.firstName || ""} ${article.author?.lastName || ""}`;
-        return authorName.toLowerCase().includes(query);
-      }
-
-      return `${article.title} ${article.content} ${article.category}`
-        .toLowerCase()
-        .includes(query);
-    });
-  }, [articles, searchBy, searchTerm]);
 
   const formatDate = (date) => new Date(date).toLocaleDateString("en-IN", {
     day: "numeric",
@@ -97,24 +82,16 @@ function Home() {
             <p className="text-sm font-semibold uppercase tracking-wider text-cyan-700">Latest writing</p>
             <h2 className="mt-1 text-3xl font-bold tracking-tight">Explore articles</h2>
           </div>
-          <div className="flex w-full flex-col gap-2 sm:flex-row md:max-w-xl">
-            <label className="sr-only" htmlFor="search-by">Search by</label>
-            <select id="search-by" value={searchBy} onChange={(event) => setSearchBy(event.target.value)} className="rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100">
-              <option value="article">Article</option>
-              <option value="author">Author name</option>
-            </select>
-            <label className="sr-only" htmlFor="article-search">Search articles</label>
-            <input id="article-search" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder={searchBy === "author" ? "Search by author name" : "Search articles by title or topic"} className="min-w-0 grow rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100" />
-          </div>
+          <button onClick={() => navigate("/articles")} className="rounded-full border border-cyan-600 px-5 py-3 text-sm font-bold text-cyan-700 transition hover:bg-cyan-600 hover:text-white">Browse all articles</button>
         </div>
 
         {loading && <p className="py-12 text-center text-slate-500">Loading articles...</p>}
         {error && <p className="py-12 text-center text-red-600">{error}</p>}
-        {!loading && !error && filteredArticles.length === 0 && <p className="py-12 text-center text-slate-500">No articles match your search.</p>}
+        {!loading && !error && articles.length === 0 && <p className="py-12 text-center text-slate-500">No articles available.</p>}
 
-        {!loading && !error && filteredArticles.length > 0 && (
+        {!loading && !error && articles.length > 0 && (
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {filteredArticles.map((article) => (
+            {articles.slice(0, 6).map((article) => (
               <article key={article._id} className="flex min-h-72 flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-cyan-200 hover:shadow-xl">
                 <div className="flex items-center justify-between gap-3">
                   <span className="rounded-full bg-cyan-50 px-3 py-1 text-xs font-bold uppercase tracking-wider text-cyan-700">{article.category}</span>

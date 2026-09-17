@@ -3,17 +3,17 @@ import { toast } from "react-hot-toast";
 import axios from 'axios';
 import { useEffect, useState } from "react";
 import { API_URL } from '../utils/api';
+import ActivityPanel from './ActivityPanel';
+import { useAuth } from '../Rstore/authStore';
 
 function UserProfile() {
 
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [articles, setArticles] = useState([]);
   const [user, setUser] = useState({ firstName: "", lastName: "", email: "", profileImageUrl: "" });
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [profileDraft, setProfileDraft] = useState({ firstName: "", lastName: "", profileImageUrl: "" });
+  const logout = useAuth((state) => state.logout);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -51,54 +51,10 @@ function UserProfile() {
     }
   };
 
-  useEffect(() => {
-    const getArticles = async () => {
-      setLoading(true);
-      try {
-        const res = await axios.get(`${API_URL}/user-api/articles`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          withCredentials: true
-        });
-
-        // FILTER ONLY ACTIVE ARTICLES
-        const activeArticles = res.data.payload.filter(
-          (article) => article.isArticleActive
-        );
-
-        setArticles(activeArticles);
-
-      } catch (err) {
-        setError(err.response?.data?.error || "Something went wrong");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    getArticles();
-  }, []);
-
-  // convert UTC → IST
-  const formatDateIST = (date) => {
-    return new Date(date).toLocaleString("en-IN", {
-      timeZone: "Asia/Kolkata",
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
-
-  const navigateToArticleByID = (articleObj) => {
-    navigate(`/article/${articleObj._id}`, {
-      state: articleObj,
-    });
-  };
-
-  if (loading) {
-    return (
-      <p className="text-center text-lg font-semibold text-slate-500 mt-20">
-        Loading articles...
-      </p>
-    );
-  }
 
   return (
     <div className="min-h-screen w-full bg-slate-50 px-6 py-10 sm:px-10 lg:px-16">
@@ -141,9 +97,14 @@ function UserProfile() {
             </div>
           </div>
 
-          <button type="button" onClick={() => setIsEditingProfile(!isEditingProfile)} className="mt-5 rounded-lg border border-cyan-300 px-4 py-2 text-sm font-bold text-cyan-300 transition hover:bg-cyan-300 hover:text-slate-950">
-            {isEditingProfile ? "Cancel" : "Edit profile"}
-          </button>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <button type="button" onClick={() => setIsEditingProfile(!isEditingProfile)} className="rounded-lg border border-cyan-300 px-4 py-2 text-sm font-bold text-cyan-300 transition hover:bg-cyan-300 hover:text-slate-950">
+              {isEditingProfile ? "Cancel" : "Edit profile"}
+            </button>
+            <button type="button" onClick={handleLogout} className="rounded-lg border border-red-300 px-4 py-2 text-sm font-bold text-red-200 transition hover:bg-red-500 hover:text-white">
+              Logout
+            </button>
+          </div>
           
           {isEditingProfile && (
             <form onSubmit={handleUpdateProfile} className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -156,60 +117,8 @@ function UserProfile() {
         </div>
       </div>
 
-      {error && (
-        <p className="text-red-500 text-center mb-6">{error}</p>
-      )}
+      <ActivityPanel />
 
-      {/* Articles Title */}
-      <h2 className="mb-6 text-2xl font-bold text-slate-950">Articles for you</h2>
-
-      {/* No articles */}
-      {articles.length === 0 && (
-        <p className="text-center text-slate-500 text-lg">
-          No articles available.
-        </p>
-      )}
-
-      {/* Articles Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-
-        {articles.map((articleObj) => (
-          <div
-            key={articleObj._id}
-            className="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-cyan-200 hover:shadow-xl"
-          >
-
-            {/* Title */}
-            <p className="mb-2 text-base font-bold text-slate-900">
-              {articleObj.title}
-            </p>
-
-            <p className="text-sm font-bold text-cyan-700 mb-2">
-              By {`${articleObj.author?.firstName || ""} ${articleObj.author?.lastName || ""}`.trim() || "Unknown author"}
-            </p>
-
-            {/* Content preview */}
-            <p className="mb-4 text-sm leading-6 text-slate-600 wrap-break-word">
-              {articleObj.content.slice(0, 80)}...
-            </p>
-
-            {/* Timestamp */}
-            <p className="mb-4 text-xs text-slate-400">
-              {formatDateIST(articleObj.createdAt)}
-            </p>
-
-            {/* Button */}
-            <button
-              className="mt-auto text-left text-sm font-bold text-slate-900 transition hover:text-cyan-700"
-              onClick={() => navigateToArticleByID(articleObj)}
-            >
-              Read Article →
-            </button>
-
-          </div>
-        ))}
-
-      </div>
       </div>
     </div>
   );

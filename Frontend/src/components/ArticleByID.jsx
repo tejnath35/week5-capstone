@@ -87,6 +87,20 @@ function ArticleByID() {
     }
   };
 
+  const permanentlyDeleteArticle = async () => {
+    if (!window.confirm("Permanently delete this article? This cannot be undone.")) return;
+
+    try {
+      await axios.delete(`${API_URL}/author-api/articles/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        withCredentials: true,
+      });
+      navigate("/author-profile/articles", { replace: true });
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to permanently delete article");
+    }
+  };
+
   //EDIT
   const editArticle = (articleObj) => {
     navigate(`/edit-article/${articleObj._id}`, { state: articleObj });
@@ -94,6 +108,21 @@ function ArticleByID() {
 
   // LIKE
   const handleLike = async () => {
+    const previousArticle = article;
+    const userId = user?._id;
+    if (!userId) return;
+    setArticle((prev) => {
+      const likes = prev.likes?.map(String) || [];
+      const dislikes = prev.dislikes?.map(String) || [];
+      const nextLikes = likes.includes(String(userId))
+        ? likes.filter((id) => id !== String(userId))
+        : [...likes, String(userId)];
+      return {
+        ...prev,
+        likes: nextLikes,
+        dislikes: nextLikes.includes(String(userId)) ? dislikes.filter((id) => id !== String(userId)) : dislikes,
+      };
+    });
     try {
       const res = await axios.post(`${API_URL}/user-api/articles/${id}/like`, {}, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -101,21 +130,38 @@ function ArticleByID() {
       });
       // the endpoint might not populate the author and comments fully, 
       // but it will return the updated arrays for likes/dislikes.
-      setArticle(prev => ({ ...prev, likes: res.data.payload.likes, dislikes: res.data.payload.dislikes }));
+      setArticle((prev) => ({ ...prev, likes: res.data.payload.likes, dislikes: res.data.payload.dislikes }));
     } catch (err) {
+      setArticle(previousArticle);
       setError(err.response?.data?.message || "Failed to like");
     }
   };
 
   // DISLIKE
   const handleDislike = async () => {
+    const previousArticle = article;
+    const userId = user?._id;
+    if (!userId) return;
+    setArticle((prev) => {
+      const likes = prev.likes?.map(String) || [];
+      const dislikes = prev.dislikes?.map(String) || [];
+      const nextDislikes = dislikes.includes(String(userId))
+        ? dislikes.filter((id) => id !== String(userId))
+        : [...dislikes, String(userId)];
+      return {
+        ...prev,
+        dislikes: nextDislikes,
+        likes: nextDislikes.includes(String(userId)) ? likes.filter((id) => id !== String(userId)) : likes,
+      };
+    });
     try {
       const res = await axios.post(`${API_URL}/user-api/articles/${id}/dislike`, {}, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         withCredentials: true
       });
-      setArticle(prev => ({ ...prev, likes: res.data.payload.likes, dislikes: res.data.payload.dislikes }));
+      setArticle((prev) => ({ ...prev, likes: res.data.payload.likes, dislikes: res.data.payload.dislikes }));
     } catch (err) {
+      setArticle(previousArticle);
       setError(err.response?.data?.message || "Failed to dislike");
     }
   };
@@ -207,6 +253,25 @@ function ArticleByID() {
 
   // COMMENT LIKE
   const handleCommentLike = async (commentId) => {
+    const previousArticle = article;
+    const userId = user?._id;
+    if (!userId) return;
+    setArticle((prev) => ({
+      ...prev,
+      comments: prev.comments.map((comment) => {
+        if (comment._id !== commentId) return comment;
+        const likes = comment.likes?.map(String) || [];
+        const dislikes = comment.dislikes?.map(String) || [];
+        const nextLikes = likes.includes(String(userId))
+          ? likes.filter((id) => id !== String(userId))
+          : [...likes, String(userId)];
+        return {
+          ...comment,
+          likes: nextLikes,
+          dislikes: nextLikes.includes(String(userId)) ? dislikes.filter((id) => id !== String(userId)) : dislikes,
+        };
+      }),
+    }));
     try {
       const res = await axios.post(`${API_URL}/user-api/articles/${id}/comments/${commentId}/like`, {}, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -214,12 +279,32 @@ function ArticleByID() {
       });
       setArticle(res.data.payload);
     } catch (err) {
+      setArticle(previousArticle);
       setError(err.response?.data?.message || "Failed to like comment");
     }
   };
 
   // COMMENT DISLIKE
   const handleCommentDislike = async (commentId) => {
+    const previousArticle = article;
+    const userId = user?._id;
+    if (!userId) return;
+    setArticle((prev) => ({
+      ...prev,
+      comments: prev.comments.map((comment) => {
+        if (comment._id !== commentId) return comment;
+        const likes = comment.likes?.map(String) || [];
+        const dislikes = comment.dislikes?.map(String) || [];
+        const nextDislikes = dislikes.includes(String(userId))
+          ? dislikes.filter((id) => id !== String(userId))
+          : [...dislikes, String(userId)];
+        return {
+          ...comment,
+          dislikes: nextDislikes,
+          likes: nextDislikes.includes(String(userId)) ? likes.filter((id) => id !== String(userId)) : likes,
+        };
+      }),
+    }));
     try {
       const res = await axios.post(`${API_URL}/user-api/articles/${id}/comments/${commentId}/dislike`, {}, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -227,6 +312,7 @@ function ArticleByID() {
       });
       setArticle(res.data.payload);
     } catch (err) {
+      setArticle(previousArticle);
       setError(err.response?.data?.message || "Failed to dislike comment");
     }
   };
@@ -323,6 +409,13 @@ function ArticleByID() {
                 onClick={restoreArticle}
               >
                 Restore
+              </button>
+
+              <button
+                className="px-4 py-2 bg-red-700 text-white rounded-lg hover:bg-red-800 transition"
+                onClick={permanentlyDeleteArticle}
+              >
+                Permanently Delete
               </button>
             </>
           )}

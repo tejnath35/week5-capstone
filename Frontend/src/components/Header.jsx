@@ -1,18 +1,9 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../Rstore/authStore";
 
 function Header() {
   const isAuthenticated = useAuth((state) => state.isAuthenticated);
   const user = useAuth((state) => state.currentUser);
-  const logout = useAuth((state) => state.logout);
-
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await logout();
-    navigate("/login");
-  };
-
   // decide profile route based on role
   const getProfilePath = () => {
     if (!user) return "/login";
@@ -55,6 +46,17 @@ function Header() {
               Home
             </NavLink>
           </li>
+
+          {isAuthenticated && (
+            <li>
+              <NavLink
+                to="/articles"
+                className={({ isActive }) => isActive ? "text-cyan-700 font-bold" : "text-gray-600 hover:text-gray-900 transition font-semibold"}
+              >
+                Articles
+              </NavLink>
+            </li>
+          )}
 
           {/* Not logged in */}
           {!isAuthenticated || !user ? (
@@ -101,14 +103,6 @@ function Header() {
                 </NavLink>
               </li>
 
-              <li>
-                <button
-                  onClick={handleLogout}
-                  className="text-gray-600 hover:text-red-500 transition"
-                >
-                  Logout
-                </button>
-              </li>
             </>
           )}
         </ul>
