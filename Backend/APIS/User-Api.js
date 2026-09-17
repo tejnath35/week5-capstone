@@ -293,6 +293,59 @@ userRoute.post('/articles/:articleId/comments/:commentId/reply', verifyToken("US
   }
 });
 
+// edit a reply by its author
+userRoute.put('/articles/:articleId/comments/:commentId/replies/:replyId', verifyToken("USER", "AUTHOR"), async (req, res) => {
+  try {
+    const { articleId, commentId, replyId } = req.params;
+    const { comment: replyText } = req.body;
+    const userId = req.user.userid;
+    const article = await ArticleModel.findById(articleId);
+    if (!article) return res.status(404).json({ message: "article not found" });
+
+    const parentComment = article.comments.id(commentId);
+    const reply = parentComment?.replies.id(replyId);
+    if (!reply) return res.status(404).json({ message: "reply not found" });
+    if (reply.user.toString() !== userId) {
+      return res.status(403).json({ message: "You are not allowed to edit this reply" });
+    }
+
+    reply.comment = replyText;
+    await article.save();
+    await article.populate("author");
+    await article.populate("comments.user");
+    await article.populate("comments.replies.user");
+    res.status(200).json({ message: "reply updated", payload: article });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// delete a reply by its author or the article author
+userRoute.delete('/articles/:articleId/comments/:commentId/replies/:replyId', verifyToken("USER", "AUTHOR"), async (req, res) => {
+  try {
+    const { articleId, commentId, replyId } = req.params;
+    const userId = req.user.userid;
+    const article = await ArticleModel.findById(articleId);
+    if (!article) return res.status(404).json({ message: "article not found" });
+
+    const parentComment = article.comments.id(commentId);
+    const reply = parentComment?.replies.id(replyId);
+    if (!reply) return res.status(404).json({ message: "reply not found" });
+    if (reply.user.toString() !== userId && article.author.toString() !== userId) {
+      return res.status(403).json({ message: "You are not allowed to delete this reply" });
+    }
+
+    parentComment.replies.pull(replyId);
+    await article.save();
+    await article.populate("author");
+    await article.populate("comments.user");
+    await article.populate("comments.replies.user");
+    res.status(200).json({ message: "reply deleted", payload: article });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // toggle like on a comment
 userRoute.post('/articles/:articleId/comments/:commentId/like', verifyToken("USER", "AUTHOR"), async (req, res) => {
   try {

@@ -76,17 +76,8 @@ commonRoute.post('/forgot-password/request', async (req, res) => {
       return res.status(404).json({ message: "User not found with this email" });
     }
     const verificationCode = crypto.randomInt(100000, 1000000).toString();
-    user.passwordResetCode = verificationCode;
-    user.passwordResetExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
-    await user.save();
 
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
-      if (process.env.NODE_ENV !== "production") {
-        return res.status(200).json({
-          message: "Development verification code generated.",
-          verificationCode,
-        });
-      }
       return res.status(500).json({ message: "Email service is not configured" });
     }
 
@@ -104,6 +95,9 @@ commonRoute.post('/forgot-password/request', async (req, res) => {
       text: `Your MyBlog password verification code is ${verificationCode}. It expires in 10 minutes.`,
     });
 
+    user.passwordResetCode = verificationCode;
+    user.passwordResetExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
+    await user.save();
     res.status(200).json({ message: "Verification code sent to your email." });
   } catch (error) {
     res.status(500).json({ message: "Error generating verification code", error: error.message });
