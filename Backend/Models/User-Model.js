@@ -28,6 +28,12 @@ const userSchema =new Schema({
         type:Boolean,
         default:true
     },
+    passwordResetCode:{
+        type:String
+    },
+    passwordResetExpiresAt:{
+        type:Date
+    },
 },{
     timestamps:true,
     strict:'throw',

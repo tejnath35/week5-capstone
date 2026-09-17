@@ -28,4 +28,5 @@ npm start
 
 ## Notes
 - If environment variables are required, create a `.env` file at the project root.
+- Password verification emails require `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, and optionally `SMTP_FROM` and `SMTP_SECURE=true`.
 - See `Server.js` for the server entrypoint.

@@ -158,8 +158,8 @@ authorRoute.patch(
       const { articleId } = req.params;
       const { isArticleActive } = req.body; // 
 
-      let article = await ArticleModel.findByIdAndUpdate(
-        articleId,
+      let article = await ArticleModel.findOneAndUpdate(
+        { _id: articleId, author: req.user.userid },
         { isArticleActive },
         { new: true }
       );
@@ -180,6 +180,30 @@ authorRoute.patch(
         message: "error updating article",
         error: err.message,
       });
+    }
+  }
+);
+
+// Permanently delete an article that has already been soft deleted.
+authorRoute.delete(
+  "/articles/:articleId",
+  verifyToken("AUTHOR"),
+  async (req, res) => {
+    try {
+      const article = await ArticleModel.findOne({
+        _id: req.params.articleId,
+        author: req.user.userid,
+        isArticleActive: false,
+      });
+
+      if (!article) {
+        return res.status(404).json({ message: "Deleted article not found" });
+      }
+
+      await ArticleModel.deleteOne({ _id: article._id });
+      res.status(200).json({ message: "Article permanently deleted" });
+    } catch (err) {
+      res.status(500).json({ message: "Error permanently deleting article", error: err.message });
     }
   }
 );
